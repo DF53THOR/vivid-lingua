@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Vivid Lingua 🌿</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet"/>
+<style>
+/* ═══ THEME ═══ */
+:root{
+  --bg:#f2fbff;--card:#ffffff;--border:#d2e6ef;--text:#0b1e24;--muted:#5a7580;
+  --primary:#12470b;--primary-l:#9dd78b;--primary-bg:#f0fced;
+  --gold:#785900;--gold-l:#fdc003;--gold-bg:#fffbeb;
+  --red:#9e2900;--red-l:#ffb8a4;--red-bg:#fff5f2;
+  --purple:#5b21b6;--purple-l:#c4b5fd;--purple-bg:#f5f3ff;
+  --shadow:rgba(11,30,36,.08);
+}
+[data-theme="dark"]{
+  --bg:#0f1a1c;--card:#1a2b2e;--border:#2a3d42;--text:#e0f4fd;--muted:#7a9ba5;
+  --primary-bg:#0d2010;--gold-bg:#1a1500;--red-bg:#1a0a06;--purple-bg:#160d2b;
+  --shadow:rgba(0,0,0,.3);
+}
+*{box-sizing:border-box;font-family:'Nunito Sans',sans-serif;transition:background-color .3s,color .3s,border-color .3s}
+body{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px;overflow-x:hidden}
+/* ═══ ANIMATIONS ═══ */
+@keyframes slideDown{from{opacity:0;transform:translateY(-24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes popIn{0%{transform:scale(0.5);opacity:0}60%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+@keyframes bounceY{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+@keyframes confettiDrop{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(500px) rotate(900deg);opacity:0}}
+@keyframes xpFloat{0%{transform:translate(-50%,-50%) scale(.5);opacity:1}100%{transform:translate(-50%,-200%) scale(1.3);opacity:0}}
+@keyframes glow{0%{box-shadow:0 0 0 0 rgba(18,71,11,.6)}100%{box-shadow:0 0 0 20px rgba(18,71,11,0)}}
+@keyframes glowGold{0%{box-shadow:0 0 0 0 rgba(253,192,3,.6)}100%{box-shadow:0 0 0 20px rgba(253,192,3,0)}}
+@keyframes pathPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+@keyframes streakFire{0%,100%{transform:rotate(-6deg) scale(1)}50%{transform:rotate(6deg) scale(1.15)}}
+@keyframes modalIn{from{opacity:0;transform:scale(.82) translateY(40px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes mascotBlink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes mascotBounce{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-8px) rotate(-4deg)}75%{transform:translateY(-4px) rotate(4deg)}}
+@keyframes mascotWave{0%,100%{transform:rotate(0deg)}30%{transform:rotate(-20deg)}60%{transform:rotate(15deg)}}
+@keyframes correctPop{0%{transform:scale(1)}40%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+@keyframes starSpin{0%{transform:rotate(0) scale(0)}50%{transform:rotate(180deg) scale(1.4)}100%{transform:rotate(360deg) scale(1)}}
+@keyframes tabIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+@keyframes progressFill{from{width:0}to{width:var(--w)}}
+@keyframes heartBreak{0%{transform:scale(1)}30%{transform:scale(1.3)}60%{transform:scale(.8)}100%{transform:scale(1)}}
+@keyframes streakPop{0%{transform:scale(1)}50%{transform:scale(1.5) rotate(10deg)}100%{transform:scale(1)}}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-60px)}}
+
+.anim-slideDown{animation:slideDown .45s cubic-bezier(.34,1.56,.64,1) both}
+.anim-slideUp{animation:slideUp .45s cubic-bezier(.34,1.56,.64,1) both}
+.anim-fadeIn{animation:fadeIn .35s ease both}
+.anim-popIn{animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both}
+.anim-bounceY{animation:bounceY 2.2s ease-in-out infinite}
+.anim-shake{animation:shake .45s ease both}
+.anim-modalIn{animation:modalIn .38s cubic-bezier(.34,1.56,.64,1) both}
+.anim-tabIn{animation:tabIn .28s ease both}
+.anim-mascotBounce{animation:mascotBounce 3s ease-in-out infinite}
+.anim-streakFire{animation:streakFire .9s ease-in-out infinite;display:inline-block}
+.anim-heartBreak{animation:heartBreak .4s ease both}
+
+/* ═══ LAYOUT ═══ */
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+.three-col{display:grid;grid-template-columns:260px 1fr 260px;gap:20px;align-items:start}
+@media(max-width:900px){.three-col{grid-template-columns:1fr}}
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:20px}
+.shadow{box-shadow:0 4px 20px var(--shadow)}
+.shadow-lg{box-shadow:0 8px 40px var(--shadow)}
+
+/* ═══ BUTTONS ═══ */
+.btn{border:none;cursor:pointer;font-weight:800;border-radius:999px;transition:all .18s;display:inline-flex;align-items:center;justify-content:center;gap:6px;user-select:none}
+.btn-primary{background:var(--primary);color:#fff;border-bottom:4px solid #0a2e06}
+.btn-primary:active{border-bottom:0;transform:translateY(4px)}
+.btn-primary:hover:not(:active){filter:brightness(1.12)}
+.btn-gold{background:var(--gold-l);color:var(--gold);border-bottom:4px solid #b38a00}
+.btn-gold:active{border-bottom:0;transform:translateY(4px)}
+.btn-red{background:var(--red);color:#fff;border-bottom:4px solid #5c1800}
+.btn-red:active{border-bottom:0;transform:translateY(4px)}
+.btn-purple{background:var(--purple);color:#fff;border-bottom:4px solid #3b0764}
+.btn-purple:active{border-bottom:0;transform:translateY(4px)}
+.btn-outline{background:var(--card);border:2px solid var(--border);color:var(--text);border-radius:999px;transition:all .18s}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-md{padding:12px 22px;font-size:14px}
+.btn-lg{padding:14px 28px;font-size:15px}
+.btn-block{width:100%}
+
+/* ═══ TABS ═══ */
+.tab-bar{display:flex;background:var(--border);border-radius:14px;padding:4px;gap:4px}
+.tab-item{flex:1;padding:9px 12px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .2s}
+.tab-item.on{background:var(--card);color:var(--primary);box-shadow:0 2px 10px var(--shadow)}
+
+/* ═══ PATH ═══ */
+.path-wrap{display:flex;flex-direction:column;align-items:center}
+.path-node{width:76px;height:76px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.9rem;cursor:pointer;border:4px solid;transition:all .25s;position:relative}
+.path-node.done-g{background:var(--primary);border-color:var(--primary);box-shadow:0 4px 16px rgba(18,71,11,.35)}
+.path-node.active-g{background:var(--card);border-color:var(--primary);animation:pathPulse 2.2s ease-in-out infinite;box-shadow:0 0 0 8px rgba(18,71,11,.12)}
+.path-node.locked{background:var(--bg);border-color:var(--border);opacity:.55}
+.path-node.done-y{background:var(--gold-l);border-color:var(--gold);box-shadow:0 4px 16px rgba(120,89,0,.35)}
+.path-node.active-y{background:var(--card);border-color:var(--gold);animation:pathPulse 2.2s ease-in-out infinite;box-shadow:0 0 0 8px rgba(253,192,3,.2)}
+.path-line{width:4px;height:28px;border-radius:4px;margin:0 auto}
+.path-line-g{background:linear-gradient(180deg,var(--primary-l),var(--border))}
+.path-line-y{background:linear-gradient(180deg,var(--gold-l),var(--border))}
+.path-pct{position:absolute;bottom:-6px;right:-6px;background:var(--primary);color:#fff;font-size:9px;font-weight:900;padding:2px 5px;border-radius:999px;white-space:nowrap}
+.path-pct-y{background:var(--gold-l);color:var(--gold)}
+.path-label{font-size:10px;font-weight:800;margin:4px 0 0;text-align:center}
+
+/* ═══ PROGRESS ═══ */
+.prog-track{background:var(--border);border-radius:999px;height:12px;overflow:hidden}
+.prog-fill{height:100%;border-radius:999px;transition:width .7s cubic-bezier(.34,1.56,.64,1)}
+.prog-g{background:linear-gradient(90deg,#4ade80,#16a34a)}
+.prog-y{background:linear-gradient(90deg,#fde68a,#d97706)}
+.prog-r{background:linear-gradient(90deg,#fca5a5,#dc2626)}
+
+/* ═══ QUIZ ═══ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px}
+.quiz-box{background:var(--card);border-radius:28px;width:100%;max-width:540px;box-shadow:0 24px 80px rgba(0,0,0,.25);overflow:hidden}
+.mc-btn{width:100%;padding:15px 18px;border-radius:16px;border:2.5px solid var(--border);background:var(--card);font-weight:700;font-size:15px;cursor:pointer;transition:all .2s;text-align:left;color:var(--text)}
+.mc-btn:hover:not(:disabled){border-color:var(--primary);background:var(--primary-bg);transform:translateX(5px)}
+.mc-btn.c{border-color:#16a34a;background:#dcfce7;animation:correctPop .4s ease}
+.mc-btn.w{border-color:#dc2626;background:#fee2e2;animation:wrongShake .4s ease}
+
+/* ═══ WORD CHIP ═══ */
+.chip{padding:9px 15px;border-radius:12px;border:2px solid var(--border);background:var(--card);font-weight:700;font-size:13px;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:5px;user-select:none;color:var(--text)}
+.chip:hover{border-color:var(--primary);background:var(--primary-bg);transform:translateY(-3px);box-shadow:0 5px 14px var(--shadow)}
+.chip.used{opacity:.25;pointer-events:none}
+.drop-chip{padding:8px 13px;border-radius:10px;background:var(--primary);color:#fff;font-weight:700;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;animation:popIn .25s ease}
+
+/* ═══ DICT ═══ */
+.dict-row{display:grid;grid-template-columns:1fr 1fr 70px 85px;gap:8px;padding:11px 16px;border-radius:12px;margin-bottom:3px;align-items:center;transition:background .2s;cursor:pointer}
+.dict-row:hover{background:var(--primary-bg)}
+.acc-bar{height:6px;border-radius:999px;background:var(--border);overflow:hidden;margin-top:3px}
+.acc-fill{height:100%;border-radius:999px;transition:width .9s ease}
+
+/* ═══ MASCOT ═══ */
+.mascot{width:100px;height:100px;position:relative;display:inline-block}
+.mascot svg{width:100%;height:100%}
+
+/* ═══ INPUT ═══ */
+.quiz-input{width:100%;border:2.5px solid var(--border);border-radius:14px;padding:14px 18px;font-size:18px;font-weight:700;text-align:center;outline:none;background:var(--card);color:var(--text);transition:border-color .2s}
+.quiz-input:focus{border-color:var(--primary)}
+.quiz-input.ok{border-color:#16a34a;background:#dcfce7}
+.quiz-input.err{border-color:#dc2626;background:#fee2e2;animation:wrongShake .4s ease}
+
+/* ═══ DARK TOGGLE ═══ */
+.dark-toggle{width:48px;height:26px;border-radius:999px;background:var(--border);position:relative;cursor:pointer;transition:background .3s;border:none;padding:0;flex-shrink:0}
+.dark-toggle.on{background:var(--primary)}
+.dark-toggle::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .3s}
+.dark-toggle.on::after{transform:translateX(22px)}
+
+/* ═══ CATEGORY BADGE ═══ */
+.badge{padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;display:inline-block}
+.badge-bizim{background:var(--primary-bg);color:var(--primary)}
+.badge-a1{background:var(--gold-bg);color:var(--gold)}
+.badge-a2{background:var(--red-bg);color:var(--red)}
+.badge-zor{background:var(--purple-bg);color:var(--purple)}
+.badge-yemek{background:#fce7f3;color:#be185d}
+.badge-seyahat{background:#eff6ff;color:#1d4ed8}
+.badge-is{background:#f0fdf4;color:#166534}
+.badge-sayilar{background:#faf5ff;color:#6b21a8}
+
+/* ═══ VERB TABLE ═══ */
+.verb-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.verb-cell{padding:8px 12px;border-radius:10px;font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.verb-pro{color:var(--muted);font-size:12px}
+.verb-form{color:var(--primary);font-size:16px}
+
+/* ═══ TOOLTIP ═══ */
+.tip{position:relative;display:inline-block}
+.tip:hover .tip-box{opacity:1;transform:translateY(-4px)}
+.tip-box{opacity:0;transform:translateY(0);transition:all .2s;position:absolute;bottom:calc(100% + 8px);left:50%;translate:-50% 0;background:var(--text);color:var(--card);font-size:12px;font-weight:600;padding:6px 10px;border-radius:8px;white-space:nowrap;pointer-events:none;z-index:10}
+
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header id="hdr" style="background:var(--card);border-bottom:1.5px solid var(--border);position:sticky;top:0;z-index:50">
+  <div class="wrap" style="display:flex;align-items:center;gap:12px;padding-top:11px;padding-bottom:11px;flex-wrap:wrap">
+    <!-- Logo + Mascot -->
+    <div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="showPage('journey')">
+      <div id="hdr-mascot" style="width:38px;height:38px;flex-shrink:0" title="Pepe!">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="50" cy="58" rx="32" ry="28" fill="#4ade80"/>
+          <ellipse cx="50" cy="40" rx="26" ry="26" fill="#22c55e"/>
+          <ellipse cx="38" cy="35" rx="9" ry="11" fill="white"/>
+          <ellipse cx="62" cy="35" rx="9" ry="11" fill="white"/>
+          <ellipse id="eye-l" cx="38" cy="37" rx="5" ry="5.5" fill="#0b1e24"/>
+          <ellipse id="eye-r" cx="62" cy="37" rx="5" ry="5.5" fill="#0b1e24"/>
+          <ellipse cx="39.5" cy="35.5" rx="1.8" ry="1.8" fill="white"/>
+          <ellipse cx="63.5" cy="35.5" rx="1.8" ry="1.8" fill="white"/>
+          <path d="M38 52 Q50 62 62 52" stroke="#0b1e24" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="50" cy="50" rx="5" ry="3.5" fill="#fbbf24"/>
+          <ellipse cx="50" cy="52" rx="3" ry="2" fill="#f59e0b"/>
+          <path d="M20 38 Q10 30 14 20 Q22 26 20 38Z" fill="#86efac"/>
+          <path d="M80 38 Q90 30 86 20 Q78 26 80 38Z" fill="#86efac"/>
+          <ellipse cx="36" cy="63" rx="7" ry="5" fill="#16a34a"/>
+          <ellipse cx="64" cy="63" rx="7" ry="5" fill="#16a34a"/>
+        </svg>
+      </div>
+      <span style="font-size:20px;font-weight:900;color:var(--primary)">Vivid Lingua</span>
+    </div>
+    <!-- Nav -->
+    <nav style="display:flex;gap:4px;flex:1;flex-wrap:wrap;justify-content:center">
+      <button class="tab-item on btn" id="nav-journey" onclick="showPage('journey')" style="border-radius:12px">🗺 Yolculuk</button>
+      <button class="tab-item btn" id="nav-vocab" onclick="showPage('vocab')" style="border-radius:12px">📚 Kelimeler</button>
+      <button class="tab-item btn" id="nav-verbs" onclick="showPage('verbs')" style="border-radius:12px">📝 Fiiller</button>
+      <button class="tab-item btn" id="nav-cats" onclick="showPage('cats')" style="border-radius:12px">🗂 Kategoriler</button>
+      <button class="tab-item btn" id="nav-challenge" onclick="showPage('challenge')" style="border-radius:12px">⚔️ Zorlayıcı</button>
+      <button class="tab-item btn" id="nav-hard" onclick="showPage('hard')" style="border-radius:12px">🔥 Ekstra Zor</button>
+    </nav>
+    <!-- Stats + Dark mode -->
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <div id="stat-streak" style="background:var(--gold-bg);border:1.5px solid var(--gold-l);border-radius:999px;padding:6px 12px;display:flex;align-items:center;gap:4px">
+        <span class="anim-streakFire">🔥</span>
+        <span id="hdr-streak" style="font-weight:900;color:var(--gold);font-size:14px">0</span>
+      </div>
+      <div style="background:var(--primary-bg);border:1.5px solid var(--primary-l);border-radius:999px;padding:6px 12px;display:flex;align-items:center;gap:4px">
+        <span style="font-size:12px">⭐</span>
+        <span id="hdr-xp" style="font-weight:900;color:var(--primary);font-size:14px">0 XP</span>
+      </div>
+      <button class="dark-toggle" id="dark-btn" onclick="toggleDark()" title="Dark Mode"></button>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════ XP FLOAT ═══════════════ -->
+<div id="xp-float" style="position:fixed;top:50%;left:50%;pointer-events:none;font-size:24px;font-weight:900;color:var(--primary);display:none;z-index:200;text-shadow:0 2px 8px var(--shadow)"></div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: JOURNEY
+════════════════════════════════════════════════ -->
+<div id="page-journey" class="wrap" style="padding-top:28px">
+
+  <!-- Mascot Greeting Banner -->
+  <div class="card shadow anim-slideDown" style="margin-bottom:24px;padding:20px 28px;display:flex;align-items:center;gap:20px;background:linear-gradient(135deg,var(--primary-bg),var(--gold-bg));overflow:hidden;position:relative">
+    <div style="flex-shrink:0;width:80px;height:80px" class="anim-mascotBounce">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="50" cy="58" rx="32" ry="28" fill="#4ade80"/>
+        <ellipse cx="50" cy="40" rx="26" ry="26" fill="#22c55e"/>
+        <ellipse cx="38" cy="35" rx="9" ry="11" fill="white"/>
+        <ellipse cx="62" cy="35" rx="9" ry="11" fill="white"/>
+        <ellipse cx="38" cy="37" rx="5" ry="5.5" fill="#0b1e24"/>
+        <ellipse cx="62" cy="37" rx="5" ry="5.5" fill="#0b1e24"/>
+        <ellipse cx="39.5" cy="35.5" rx="1.8" ry="1.8" fill="white"/>
+        <ellipse cx="63.5" cy="35.5" rx="1.8" ry="1.8" fill="white"/>
+        <path d="M38 52 Q50 62 62 52" stroke="#0b1e24" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="50" cy="50" rx="5" ry="3.5" fill="#fbbf24"/>
+        <path d="M20 38 Q10 30 14 20 Q22 26 20 38Z" fill="#86efac"/>
+        <path d="M80 38 Q90 30 86 20 Q78 26 80 38Z" fill="#86efac"/>
+        <ellipse cx="36" cy="63" rx="7" ry="5" fill="#16a34a"/>
+        <ellipse cx="64" cy="63" rx="7" ry="5" fill="#16a34a"/>
+        <!-- wave arm -->
+        <path d="M78 45 Q88 38 85 28" stroke="#16a34a" stroke-width="8" fill="none" stroke-linecap="round" class="anim-mascotWave" style="animation:mascotWave 2s ease-in-out infinite"/>
+      </svg>
+    </div>
+    <div style="flex:1">
+      <div style="font-size:20px;font-weight:900;color:var(--primary);margin-bottom:4px" id="greeting-text">¡Hola! Bugün ne öğreneceğiz? 🌿</div>
+      <div style="font-size:14px;color:var(--muted);font-weight:600" id="greeting-sub">Pepe seninle birlikte öğreniyor!</div>
+    </div>
+    <div style="position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08)"></div>
+  </div>
+
+  <!-- 3-col -->
+  <div class="three-col">
+
+    <!-- LEFT: BİZİM KELİMELER -->
+    <div class="anim-slideUp" style="animation-delay:.05s">
+      <div style="text-align:center;margin-bottom:14px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Bizim Kelimeler</div>
+        <div style="font-size:19px;font-weight:900;color:var(--primary);margin-top:2px">🌱 Kendi Listem</div>
+      </div>
+      <!-- Progress -->
+      <div class="card shadow" style="padding:14px;margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:6px">
+          <span style="color:var(--muted)">İlerleme</span>
+          <span id="biz-prog-txt" style="color:var(--primary)">0/0</span>
+        </div>
+        <div class="prog-track"><div id="biz-prog-bar" class="prog-fill prog-g" style="width:0%"></div></div>
+      </div>
+      <!-- Path -->
+      <div id="biz-path" class="path-wrap" style="gap:0"></div>
+      <button class="btn btn-primary btn-lg btn-block anim-bounceY" onclick="startQuiz('bizim')" style="margin-top:12px">
+        🎯 Alıştırma Başlat
+      </button>
+    </div>
+
+    <!-- CENTER -->
+    <div class="anim-slideUp" style="animation-delay:.1s">
+      <!-- Sentence Builder -->
+      <div style="text-align:center;margin-bottom:14px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Cümle Atölyesi</div>
+        <div style="font-size:19px;font-weight:900;color:var(--primary);margin-top:2px">🔨 Kur & Öğren</div>
+      </div>
+      <div class="card shadow" style="padding:20px;background:linear-gradient(135deg,#e8dec7,#f5efe0);border-color:#c2b292;border-width:3px">
+        <div id="sb-drop" style="min-height:70px;background:rgba(255,255,255,.55);border:2.5px dashed #c2b292;border-radius:14px;padding:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px">
+          <span id="sb-ph" style="color:#9a8060;font-weight:600;font-size:13px;width:100%;text-align:center">Aşağıdaki kelimelere tıkla 👇</span>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <button class="btn btn-primary btn-sm" id="sbt-bizim" onclick="sbTab('bizim')" style="flex:1">Bizim</button>
+          <button class="btn btn-outline btn-sm" id="sbt-yeni" onclick="sbTab('yeni')" style="flex:1">Yeni</button>
+          <button class="btn btn-outline btn-sm" id="sbt-yemek" onclick="sbTab('yemek')" style="flex:1">🍽 Yemek</button>
+        </div>
+        <div id="sb-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px;min-height:96px"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-outline btn-sm" onclick="sbClear()" style="flex-shrink:0;padding:11px 14px">✕</button>
+          <button class="btn btn-primary btn-sm" onclick="sbCheck()" style="flex:1;padding:11px">✅ Kontrol</button>
+          <button class="btn btn-outline btn-sm" onclick="sbShuffle()" style="flex-shrink:0;padding:11px 14px">🔀</button>
+        </div>
+        <div id="sb-fb" style="margin-top:10px;display:none;padding:11px;border-radius:12px;font-size:13px;font-weight:600;line-height:1.5"></div>
+      </div>
+
+      <!-- Listening mini -->
+      <div class="card shadow" style="padding:18px;margin-top:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="font-weight:800;font-size:15px;color:var(--primary)">🎧 Günün Kelimesi</div>
+          <button class="btn btn-outline btn-sm" onclick="loadDailyWord()">🔄 Yeni</button>
+        </div>
+        <div id="daily-card" style="text-align:center">
+          <div style="font-size:30px;font-weight:900;color:var(--primary);margin-bottom:4px" id="dw-word">—</div>
+          <div style="font-size:14px;color:var(--muted);font-weight:600;margin-bottom:10px" id="dw-tr">yükleniyor...</div>
+          <button class="btn btn-outline btn-sm" onclick="speakWord()" id="dw-speak" style="margin-bottom:8px;width:100%">🔊 Dinle</button>
+          <div id="dw-example" style="font-size:12px;color:var(--muted);font-style:italic;padding:8px;background:var(--bg);border-radius:10px;line-height:1.5"></div>
+        </div>
+      </div>
+
+      <!-- Info cards -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
+        <div class="card shadow" style="padding:14px;cursor:pointer;transition:transform .2s" onmouseenter="this.style.transform='translateY(-4px)'" onmouseleave="this.style.transform=''" onclick="showPage('verbs')">
+          <div style="font-size:22px;margin-bottom:6px">📝</div>
+          <div style="font-weight:800;font-size:13px;margin-bottom:3px">Fiil Çekimleri</div>
+          <div style="font-size:11px;color:var(--muted)">10 temel fiili öğren</div>
+        </div>
+        <div class="card shadow" style="padding:14px;cursor:pointer;transition:transform .2s" onmouseenter="this.style.transform='translateY(-4px)'" onmouseleave="this.style.transform=''" onclick="showPage('cats')">
+          <div style="font-size:22px;margin-bottom:6px">🗂</div>
+          <div style="font-weight:800;font-size:13px;margin-bottom:3px">Kategoriler</div>
+          <div style="font-size:11px;color:var(--muted)">Yemek, seyahat, iş...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: YENİ KELİMELER -->
+    <div class="anim-slideUp" style="animation-delay:.15s">
+      <div style="text-align:center;margin-bottom:14px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Yeni Kelimeler</div>
+        <div style="font-size:19px;font-weight:900;color:var(--gold);margin-top:2px">⭐ A1 / A2</div>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:12px">
+        <button class="btn btn-gold btn-sm" id="ynl-a1" onclick="yeniLevel('A1')" style="flex:1">A1</button>
+        <button class="btn btn-outline btn-sm" id="ynl-a2" onclick="yeniLevel('A2')" style="flex:1">A2</button>
+      </div>
+      <div class="card shadow" style="padding:14px;margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:6px">
+          <span style="color:var(--muted)">İlerleme</span>
+          <span id="yeni-prog-txt" style="color:var(--gold)">0/0</span>
+        </div>
+        <div class="prog-track"><div id="yeni-prog-bar" class="prog-fill prog-y" style="width:0%"></div></div>
+      </div>
+      <div id="yeni-path" class="path-wrap" style="gap:0"></div>
+      <button class="btn btn-gold btn-lg btn-block" onclick="startQuiz('yeni')" style="margin-top:12px">
+        ⚡ Alıştırma Başlat
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: VOCAB (Kelime Defteri)
+════════════════════════════════════════════════ -->
+<div id="page-vocab" class="wrap" style="padding-top:28px;display:none">
+  <div class="anim-slideDown" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+    <div>
+      <div style="font-size:24px;font-weight:900;color:var(--primary)">📚 Kelime Defteri</div>
+      <div style="color:var(--muted);font-size:13px;font-weight:600;margin-top:2px">Doğruluk oranına göre sıralı · Tıkla → Örnek cümle</div>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="btn btn-primary btn-sm" id="vf-all" onclick="vocabFilter('all')">Tümü</button>
+      <button class="btn btn-outline btn-sm" id="vf-bizim" onclick="vocabFilter('bizim')">🌱 Bizim</button>
+      <button class="btn btn-outline btn-sm" id="vf-A1" onclick="vocabFilter('A1')">A1</button>
+      <button class="btn btn-outline btn-sm" id="vf-A2" onclick="vocabFilter('A2')">A2</button>
+      <button class="btn btn-outline btn-sm" id="vf-zor" onclick="vocabFilter('zor')">🔥 B1</button>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:70px 1fr 1fr 80px 90px;gap:8px;padding:10px 16px;background:var(--primary-bg);border-radius:12px;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">
+    <span>#</span><span>İspanyolca</span><span>Anlam</span><span>Seviye</span><span style="text-align:right">Doğruluk</span>
+  </div>
+  <div id="vocab-list"></div>
+  <!-- Expanded row -->
+  <div id="vocab-expand" style="display:none;margin-top:8px" class="card shadow anim-popIn"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: FİİL ÇEKİMLERİ
+════════════════════════════════════════════════ -->
+<div id="page-verbs" class="wrap" style="padding-top:28px;display:none">
+  <div class="anim-slideDown" style="margin-bottom:24px">
+    <div style="font-size:24px;font-weight:900;color:var(--primary)">📝 Fiil Çekimleri</div>
+    <div style="color:var(--muted);font-size:13px;font-weight:600;margin-top:2px">Şimdiki zaman (Presente de Indicativo)</div>
+  </div>
+  <div id="verb-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px"></div>
+  <!-- Verb Quiz button -->
+  <div style="text-align:center;margin-top:28px">
+    <button class="btn btn-primary btn-lg" onclick="startVerbQuiz()">🎯 Fiil Quizi Başlat</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: KATEGORİLER
+════════════════════════════════════════════════ -->
+<div id="page-cats" class="wrap" style="padding-top:28px;display:none">
+  <div class="anim-slideDown" style="margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+    <div>
+      <div style="font-size:24px;font-weight:900;color:var(--primary)">🗂 Kategoriler</div>
+      <div style="color:var(--muted);font-size:13px;font-weight:600;margin-top:2px">Konuya göre kelimeler</div>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap" id="cat-tabs"></div>
+  </div>
+  <div id="cat-content"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: CHALLENGE
+════════════════════════════════════════════════ -->
+<div id="page-challenge" class="wrap" style="padding-top:28px;display:none">
+  <div class="anim-slideDown" style="text-align:center;margin-bottom:28px">
+    <div style="font-size:28px;font-weight:900;color:var(--red)">⚔️ Zorlayıcı Mod</div>
+    <div style="color:var(--muted);font-size:14px;font-weight:600;margin-top:4px">Türkçe → İspanyolca · A2 Seviyesi</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:640px;margin:0 auto 28px">
+    <div class="card shadow" style="padding:24px;text-align:center;cursor:pointer;transition:all .25s;border-color:var(--red-l)" onclick="startChallenge('translate')"
+      onmouseenter="this.style.transform='translateY(-6px)';this.style.borderColor='var(--red)'"
+      onmouseleave="this.style.transform='';this.style.borderColor='var(--red-l)'">
+      <div style="font-size:44px;margin-bottom:12px">✍️</div>
+      <div style="font-weight:900;font-size:16px;color:var(--red);margin-bottom:6px">Çeviri Testi</div>
+      <div style="font-size:12px;color:var(--muted)">Türkçe → İspanyolca yaz</div>
+    </div>
+    <div class="card shadow" style="padding:24px;text-align:center;cursor:pointer;transition:all .25s;border-color:var(--red-l)" onclick="startChallenge('sentence')"
+      onmouseenter="this.style.transform='translateY(-6px)';this.style.borderColor='var(--red)'"
+      onmouseleave="this.style.transform='';this.style.borderColor='var(--red-l)'">
+      <div style="font-size:44px;margin-bottom:12px">🏗️</div>
+      <div style="font-weight:900;font-size:16px;color:var(--red);margin-bottom:6px">Cümle Kur</div>
+      <div style="font-size:12px;color:var(--muted)">Verilen kelimelerle cümle oluştur</div>
+    </div>
+  </div>
+  <div id="chal-area" class="card shadow anim-slideUp" style="max-width:600px;margin:0 auto;padding:28px;display:none"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: HARD
+════════════════════════════════════════════════ -->
+<div id="page-hard" class="wrap" style="padding-top:28px;display:none">
+  <div class="anim-slideDown" style="text-align:center;margin-bottom:28px">
+    <div style="font-size:28px;font-weight:900;color:#7c2d12">🔥 Ekstra Zor</div>
+    <div style="color:var(--muted);font-size:14px;font-weight:600;margin-top:6px">İngilizce → İspanyolca · A2-son / B1</div>
+    <div style="margin-top:10px;background:var(--red-bg);border:1.5px solid var(--red-l);border-radius:12px;padding:10px 20px;display:inline-block;font-size:13px;color:var(--red);font-weight:700">
+      ⚠️ Bu bölüm gerçekten zor! Hazır hissediyorsan devam et.
+    </div>
+  </div>
+  <div style="max-width:600px;margin:0 auto">
+    <button class="btn btn-red btn-lg btn-block" onclick="startHard()" style="margin-bottom:20px">🔥 Zor Moda Gir</button>
+    <div id="hard-area" class="card shadow" style="padding:28px;display:none"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     QUIZ MODAL
+════════════════════════════════════════════════ -->
+<div id="quiz-ov" class="overlay" style="display:none">
+  <div class="quiz-box anim-modalIn" id="quiz-box">
+    <div style="padding:20px 24px;border-bottom:1.5px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <button onclick="closeQuiz()" style="background:none;border:none;cursor:pointer;font-size:22px;color:var(--muted);line-height:1;padding:0">✕</button>
+        <div style="font-size:12px;font-weight:800;color:var(--muted)" id="q-counter">1/10</div>
+        <div id="q-hearts" style="font-size:20px;letter-spacing:-3px;transition:all .3s">❤️❤️❤️</div>
+      </div>
+      <div class="prog-track"><div id="q-prog" class="prog-fill prog-g" style="width:0%"></div></div>
+    </div>
+    <div id="q-body" style="padding:24px"></div>
+    <div id="q-foot" style="padding:0 24px 24px"></div>
+  </div>
+</div>
+
+<!-- RESULT MODAL -->
+<div id="res-ov" class="overlay" style="display:none">
+  <div class="quiz-box anim-modalIn" style="text-align:center;padding:36px;position:relative;overflow:hidden">
+    <div id="confetti-box" style="position:absolute;inset:0;pointer-events:none"></div>
+    <div id="res-mascot" style="width:90px;height:90px;margin:0 auto 12px" class="anim-mascotBounce">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="50" cy="58" rx="32" ry="28" fill="#4ade80"/>
+        <ellipse cx="50" cy="40" rx="26" ry="26" fill="#22c55e"/>
+        <ellipse cx="38" cy="35" rx="9" ry="11" fill="white"/>
+        <ellipse cx="62" cy="35" rx="9" ry="11" fill="white"/>
+        <ellipse cx="38" cy="37" rx="5" ry="5.5" fill="#0b1e24"/>
+        <ellipse cx="62" cy="37" rx="5" ry="5.5" fill="#0b1e24"/>
+        <path id="res-mouth" d="M38 52 Q50 64 62 52" stroke="#0b1e24" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="50" cy="50" rx="5" ry="3.5" fill="#fbbf24"/>
+        <ellipse cx="36" cy="63" rx="7" ry="5" fill="#16a34a"/>
+        <ellipse cx="64" cy="63" rx="7" ry="5" fill="#16a34a"/>
+      </svg>
+    </div>
+    <div id="res-title" style="font-size:26px;font-weight:900;color:var(--primary);margin-bottom:6px"></div>
+    <div id="res-body" style="color:var(--muted);font-size:14px;font-weight:600;margin-bottom:24px"></div>
+    <div style="display:flex;gap:12px;justify-content:center;margin-bottom:24px">
+      <div style="background:var(--primary-bg);border-radius:16px;padding:14px 18px;min-width:76px">
+        <div id="res-c" style="font-size:26px;font-weight:900;color:var(--primary)">0</div>
+        <div style="font-size:11px;font-weight:700;color:var(--muted)">Doğru</div>
+      </div>
+      <div style="background:#fee2e2;border-radius:16px;padding:14px 18px;min-width:76px">
+        <div id="res-w" style="font-size:26px;font-weight:900;color:#dc2626">0</div>
+        <div style="font-size:11px;font-weight:700;color:var(--muted)">Yanlış</div>
+      </div>
+      <div style="background:var(--gold-bg);border-radius:16px;padding:14px 18px;min-width:76px">
+        <div id="res-xp" style="font-size:26px;font-weight:900;color:var(--gold)">+0</div>
+        <div style="font-size:11px;font-weight:700;color:var(--muted)">XP</div>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-lg btn-block" onclick="closeResult()">Devam Et 🚀</button>
+  </div>
+</div>
+
+<!-- VERB QUIZ MODAL -->
+<div id="vq-ov" class="overlay" style="display:none">
+  <div class="quiz-box anim-modalIn" id="vq-box">
+    <div style="padding:20px 24px;border-bottom:1.5px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <button onclick="closeVerbQuiz()" style="background:none;border:none;cursor:pointer;font-size:22px;color:var(--muted);padding:0">✕</button>
+        <div style="font-size:13px;font-weight:800;color:var(--primary)">📝 Fiil Quizi</div>
+        <div id="vq-counter" style="font-size:12px;font-weight:800;color:var(--muted)">1/10</div>
+      </div>
+      <div class="prog-track"><div id="vq-prog" class="prog-fill prog-g" style="width:0%"></div></div>
+    </div>
+    <div id="vq-body" style="padding:24px"></div>
+    <div id="vq-foot" style="padding:0 24px 24px"></div>
+  </div>
+</div>
+
+<!-- Mobile Nav -->
+<nav style="position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1.5px solid var(--border);display:flex;justify-content:space-around;padding:6px 4px 10px;z-index:50">
+  <button onclick="showPage('journey')" style="display:flex;flex-direction:column;align-items:center;gap:1px;background:none;border:none;cursor:pointer;font-size:9px;font-weight:800;color:var(--primary)"><span style="font-size:20px">🗺</span>Yolculuk</button>
+  <button onclick="showPage('vocab')" style="display:flex;flex-direction:column;align-items:center;gap:1px;background:none;border:none;cursor:pointer;font-size:9px;font-weight:700;color:var(--muted)"><span style="font-size:20px">📚</span>Kelimeler</button>
+  <button onclick="showPage('verbs')" style="display:flex;flex-direction:column;align-items:center;gap:1px;background:none;border:none;cursor:pointer;font-size:9px;font-weight:700;color:var(--muted)"><span style="font-size:20px">📝</span>Fiiller</button>
+  <button onclick="showPage('cats')" style="display:flex;flex-direction:column;align-items:center;gap:1px;background:none;border:none;cursor:pointer;font-size:9px;font-weight:700;color:var(--muted)"><span style="font-size:20px">🗂</span>Kategoriler</button>
+  <button onclick="showPage('challenge')" style="display:flex;flex-direction:column;align-items:center;gap:1px;background:none;border:none;cursor:pointer;font-size:9px;font-weight:700;color:var(--muted)"><span style="font-size:20px">⚔️</span>Zorlayıcı</button>
+  <button onclick="showPage('hard')" style="display:flex;flex-direction:column;align-items:center;gap:1px;background:none;border:none;cursor:pointer;font-size:9px;font-weight:700;color:var(--muted)"><span style="font-size:20px">🔥</span>Zor</button>
+</nav>
+
+<script>
+// ════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════
+let DB={"bizimKelimeler": [{"ispanyolca": "beber", "turkce": "içmek", "ornek": "Quiero beber agua.", "ornek_tr": "Su içmek istiyorum."}, {"ispanyolca": "comer", "turkce": "yemek yemek", "ornek": "Vamos a comer juntos.", "ornek_tr": "Birlikte yemek yiyelim."}, {"ispanyolca": "conocer", "turkce": "tanışmak", "ornek": "Quiero conocer a tu familia.", "ornek_tr": "Aileni tanımak istiyorum."}, {"ispanyolca": "ayudar", "turkce": "yardım etmek", "ornek": "¿Puedes ayudarme?", "ornek_tr": "Bana yardım edebilir misin?"}, {"ispanyolca": "dar", "turkce": "vermek", "ornek": "Te doy mi número.", "ornek_tr": "Sana numaramı veriyorum."}, {"ispanyolca": "mucho", "turkce": "çok", "ornek": "Tengo mucho trabajo.", "ornek_tr": "Çok işim var."}, {"ispanyolca": "sí", "turkce": "evet", "ornek": "Sí, entiendo.", "ornek_tr": "Evet, anlıyorum."}, {"ispanyolca": "vale", "turkce": "tamam", "ornek": "Vale, hasta mañana.", "ornek_tr": "Tamam, yarına kadar."}, {"ispanyolca": "escribir", "turkce": "yazmak", "ornek": "Me gusta escribir cartas.", "ornek_tr": "Mektup yazmayı seviyorum."}, {"ispanyolca": "manzana", "turkce": "elma", "ornek": "Como una manzana cada día.", "ornek_tr": "Her gün bir elma yerim."}, {"ispanyolca": "querer", "turkce": "istemek", "ornek": "Quiero aprender español.", "ornek_tr": "İspanyolca öğrenmek istiyorum."}, {"ispanyolca": "amar", "turkce": "sevmek", "ornek": "Amo a mi familia.", "ornek_tr": "Ailemi seviyorum."}, {"ispanyolca": "tú", "turkce": "sen", "ornek": "Tú hablas muy bien.", "ornek_tr": "Sen çok iyi konuşuyorsun."}, {"ispanyolca": "yo", "turkce": "ben", "ornek": "Yo soy estudiante.", "ornek_tr": "Ben öğrenciyim."}, {"ispanyolca": "escuchar", "turkce": "dinlemek", "ornek": "Me gusta escuchar música.", "ornek_tr": "Müzik dinlemeyi seviyorum."}, {"ispanyolca": "escuela", "turkce": "okul", "ornek": "Voy a la escuela cada día.", "ornek_tr": "Her gün okula gidiyorum."}, {"ispanyolca": "estudiar", "turkce": "ders çalışmak", "ornek": "Estudio español por las noches.", "ornek_tr": "Geceleri İspanyolca çalışıyorum."}, {"ispanyolca": "estudiante", "turkce": "öğrenci", "ornek": "Soy estudiante de idiomas.", "ornek_tr": "Dil öğrencisiyim."}, {"ispanyolca": "mundo", "turkce": "dünya", "ornek": "El mundo es muy grande.", "ornek_tr": "Dünya çok büyük."}, {"ispanyolca": "agua", "turkce": "su", "ornek": "El agua es vida.", "ornek_tr": "Su hayattır."}, {"ispanyolca": "necesitar", "turkce": "ihtiyacı olmak", "ornek": "Necesito más tiempo.", "ornek_tr": "Daha fazla zamana ihtiyacım var."}, {"ispanyolca": "nuevo", "turkce": "yeni", "ornek": "Tengo un libro nuevo.", "ornek_tr": "Yeni bir kitabım var."}, {"ispanyolca": "dinero", "turkce": "para", "ornek": "No tengo dinero.", "ornek_tr": "Param yok."}, {"ispanyolca": "aprender", "turkce": "öğrenmek", "ornek": "Quiero aprender muchas cosas.", "ornek_tr": "Çok şey öğrenmek istiyorum."}, {"ispanyolca": "rápido", "turkce": "hızlı", "ornek": "El tren es muy rápido.", "ornek_tr": "Tren çok hızlı."}, {"ispanyolca": "coche", "turkce": "araba", "ornek": "Mi coche es rojo.", "ornek_tr": "Arabam kırmızı."}, {"ispanyolca": "casa", "turkce": "ev", "ornek": "Estoy en casa.", "ornek_tr": "Evdeyim."}, {"ispanyolca": "día", "turkce": "gün", "ornek": "Hoy es un buen día.", "ornek_tr": "Bugün güzel bir gün."}, {"ispanyolca": "perro", "turkce": "köpek", "ornek": "Mi perro se llama Max.", "ornek_tr": "Köpeğimin adı Max."}, {"ispanyolca": "pequeño", "turkce": "küçük", "ornek": "Vivo en un apartamento pequeño.", "ornek_tr": "Küçük bir dairede yaşıyorum."}, {"ispanyolca": "verano", "turkce": "yaz", "ornek": "En verano voy a la playa.", "ornek_tr": "Yazın plaja gidiyorum."}, {"ispanyolca": "invierno", "turkce": "kış", "ornek": "El invierno es muy frío.", "ornek_tr": "Kış çok soğuk."}, {"ispanyolca": "padre", "turkce": "baba", "ornek": "Mi padre trabaja mucho.", "ornek_tr": "Babam çok çalışıyor."}, {"ispanyolca": "libro", "turkce": "kitap", "ornek": "Leo un libro cada semana.", "ornek_tr": "Her hafta bir kitap okuyorum."}, {"ispanyolca": "hombre", "turkce": "adam", "ornek": "Ese hombre es muy alto.", "ornek_tr": "O adam çok uzun."}, {"ispanyolca": "película", "turkce": "film", "ornek": "Vemos una película esta noche.", "ornek_tr": "Bu gece film izliyoruz."}, {"ispanyolca": "correr", "turkce": "koşmak", "ornek": "Corro cinco kilómetros cada mañana.", "ornek_tr": "Her sabah beş kilometre koşuyorum."}, {"ispanyolca": "cantar", "turkce": "şarkı söylemek", "ornek": "Me encanta cantar en la ducha.", "ornek_tr": "Duşta şarkı söylemeyi çok seviyorum."}, {"ispanyolca": "hermana", "turkce": "kız kardeş", "ornek": "Mi hermana vive en Madrid.", "ornek_tr": "Kız kardeşim Madrid'de yaşıyor."}, {"ispanyolca": "empezar", "turkce": "başlamak", "ornek": "Vamos a empezar ahora.", "ornek_tr": "Şimdi başlayalım."}, {"ispanyolca": "ciudad", "turkce": "şehir", "ornek": "Esta ciudad es muy bonita.", "ornek_tr": "Bu şehir çok güzel."}, {"ispanyolca": "trabajo", "turkce": "iş", "ornek": "Me gusta mi trabajo.", "ornek_tr": "İşimi seviyorum."}, {"ispanyolca": "jardín", "turkce": "bahçe", "ornek": "Las flores del jardín son bonitas.", "ornek_tr": "Bahçedeki çiçekler güzel."}, {"ispanyolca": "leche", "turkce": "süt", "ornek": "Bebo leche cada mañana.", "ornek_tr": "Her sabah süt içiyorum."}, {"ispanyolca": "puerta", "turkce": "kapı", "ornek": "Cierra la puerta, por favor.", "ornek_tr": "Lütfen kapıyı kapat."}, {"ispanyolca": "dormir", "turkce": "uyumak", "ornek": "Necesito dormir ocho horas.", "ornek_tr": "Sekiz saat uyumam gerekiyor."}, {"ispanyolca": "por favor", "turkce": "lütfen", "ornek": "Un café, por favor.", "ornek_tr": "Bir kahve, lütfen."}, {"ispanyolca": "comprar", "turkce": "satın almak", "ornek": "Voy a comprar pan.", "ornek_tr": "Ekmek almaya gidiyorum."}, {"ispanyolca": "regalo", "turkce": "hediye", "ornek": "Este regalo es para ti.", "ornek_tr": "Bu hediye senin için."}, {"ispanyolca": "hermano", "turkce": "erkek kardeş", "ornek": "Mi hermano tiene quince años.", "ornek_tr": "Erkek kardeşim on beş yaşında."}, {"ispanyolca": "madre", "turkce": "anne", "ornek": "Mi madre cocina muy bien.", "ornek_tr": "Annem çok iyi yemek yapar."}, {"ispanyolca": "gato", "turkce": "kedi", "ornek": "El gato duerme todo el día.", "ornek_tr": "Kedi bütün gün uyuyor."}, {"ispanyolca": "mesa", "turkce": "masa", "ornek": "El libro está sobre la mesa.", "ornek_tr": "Kitap masanın üzerinde."}, {"ispanyolca": "silla", "turkce": "sandalye", "ornek": "Siéntate en la silla.", "ornek_tr": "Sandalyeye otur."}], "yeniKelimeler": [{"ispanyolca": "ser", "turkce": "olmak (kalıcı)", "seviye": "A1", "ornek": "Yo soy de Turquía.", "ornek_tr": "Ben Türkiye'denim."}, {"ispanyolca": "estar", "turkce": "olmak (geçici/yer)", "seviye": "A1", "ornek": "Estoy muy cansado hoy.", "ornek_tr": "Bugün çok yorgunum."}, {"ispanyolca": "tener", "turkce": "sahip olmak", "seviye": "A1", "ornek": "Tengo dos hermanos.", "ornek_tr": "İki kardeşim var."}, {"ispanyolca": "hacer", "turkce": "yapmak", "seviye": "A1", "ornek": "¿Qué haces tú?", "ornek_tr": "Sen ne yapıyorsun?"}, {"ispanyolca": "decir", "turkce": "söylemek", "seviye": "A1", "ornek": "¿Qué dice él?", "ornek_tr": "O ne söylüyor?"}, {"ispanyolca": "ir", "turkce": "gitmek", "seviye": "A1", "ornek": "Voy al supermercado.", "ornek_tr": "Markete gidiyorum."}, {"ispanyolca": "ver", "turkce": "görmek", "seviye": "A1", "ornek": "¿Ves ese edificio?", "ornek_tr": "O binayı görüyor musun?"}, {"ispanyolca": "poder", "turkce": "yapabilmek", "seviye": "A1", "ornek": "No puedo dormir.", "ornek_tr": "Uyuyamıyorum."}, {"ispanyolca": "saber", "turkce": "bilmek", "seviye": "A1", "ornek": "Sé hablar español.", "ornek_tr": "İspanyolca konuşmasını biliyorum."}, {"ispanyolca": "venir", "turkce": "gelmek", "seviye": "A1", "ornek": "¿Vienes a la fiesta?", "ornek_tr": "Partiye geliyor musun?"}, {"ispanyolca": "pensar", "turkce": "düşünmek", "seviye": "A1", "ornek": "Pienso que tienes razón.", "ornek_tr": "Haklı olduğunu düşünüyorum."}, {"ispanyolca": "volver", "turkce": "geri dönmek", "seviye": "A1", "ornek": "Vuelvo a casa a las seis.", "ornek_tr": "Saat altıda eve dönüyorum."}, {"ispanyolca": "sentir", "turkce": "hissetmek", "seviye": "A1", "ornek": "Me siento muy bien.", "ornek_tr": "Kendimi çok iyi hissediyorum."}, {"ispanyolca": "vivir", "turkce": "yaşamak", "seviye": "A1", "ornek": "Vivo en Estambul.", "ornek_tr": "İstanbul'da yaşıyorum."}, {"ispanyolca": "llegar", "turkce": "varmak", "seviye": "A1", "ornek": "Llego tarde siempre.", "ornek_tr": "Her zaman geç kalıyorum."}, {"ispanyolca": "hablar", "turkce": "konuşmak", "seviye": "A1", "ornek": "Hablo un poco de español.", "ornek_tr": "Biraz İspanyolca konuşuyorum."}, {"ispanyolca": "llamar", "turkce": "aramak / çağırmak", "seviye": "A1", "ornek": "Te llamo mañana.", "ornek_tr": "Seni yarın ararım."}, {"ispanyolca": "tomar", "turkce": "almak / içmek", "seviye": "A1", "ornek": "Tomo un café cada mañana.", "ornek_tr": "Her sabah bir kahve içiyorum."}, {"ispanyolca": "mirar", "turkce": "bakmak", "seviye": "A1", "ornek": "Miro la televisión.", "ornek_tr": "Televizyon izliyorum."}, {"ispanyolca": "esperar", "turkce": "beklemek", "seviye": "A1", "ornek": "Te espero aquí.", "ornek_tr": "Seni burada bekliyorum."}, {"ispanyolca": "buscar", "turkce": "aramak (bir şeyi)", "seviye": "A1", "ornek": "Busco mis llaves.", "ornek_tr": "Anahtarlarımı arıyorum."}, {"ispanyolca": "leer", "turkce": "okumak", "seviye": "A1", "ornek": "Leo el periódico cada día.", "ornek_tr": "Her gün gazete okuyorum."}, {"ispanyolca": "jugar", "turkce": "oynamak", "seviye": "A1", "ornek": "Los niños juegan en el parque.", "ornek_tr": "Çocuklar parkta oynuyor."}, {"ispanyolca": "año", "turkce": "yıl", "seviye": "A1", "ornek": "Este año aprendo español.", "ornek_tr": "Bu yıl İspanyolca öğreniyorum."}, {"ispanyolca": "vida", "turkce": "hayat", "seviye": "A1", "ornek": "La vida es bella.", "ornek_tr": "Hayat güzel."}, {"ispanyolca": "familia", "turkce": "aile", "seviye": "A1", "ornek": "Mi familia es muy grande.", "ornek_tr": "Ailem çok kalabalık."}, {"ispanyolca": "amigo", "turkce": "arkadaş", "seviye": "A1", "ornek": "Él es mi mejor amigo.", "ornek_tr": "O benim en iyi arkadaşım."}, {"ispanyolca": "noche", "turkce": "gece", "seviye": "A1", "ornek": "Buenas noches a todos.", "ornek_tr": "Herkese iyi geceler."}, {"ispanyolca": "país", "turkce": "ülke", "seviye": "A1", "ornek": "España es un país bonito.", "ornek_tr": "İspanya güzel bir ülke."}, {"ispanyolca": "persona", "turkce": "kişi", "seviye": "A1", "ornek": "Ella es una persona muy amable.", "ornek_tr": "O çok nazik bir kişi."}, {"ispanyolca": "nombre", "turkce": "isim", "seviye": "A1", "ornek": "¿Cómo te llamas? Mi nombre es...", "ornek_tr": "Adın ne? Benim adım..."}, {"ispanyolca": "semana", "turkce": "hafta", "seviye": "A1", "ornek": "Esta semana tengo mucho trabajo.", "ornek_tr": "Bu hafta çok işim var."}, {"ispanyolca": "hora", "turkce": "saat", "seviye": "A1", "ornek": "¿Qué hora es?", "ornek_tr": "Saat kaç?"}, {"ispanyolca": "mañana", "turkce": "yarın / sabah", "seviye": "A1", "ornek": "Nos vemos mañana.", "ornek_tr": "Yarın görüşürüz."}, {"ispanyolca": "profesor", "turkce": "öğretmen", "seviye": "A1", "ornek": "El profesor explica muy bien.", "ornek_tr": "Öğretmen çok iyi açıklıyor."}, {"ispanyolca": "tren", "turkce": "tren", "seviye": "A1", "ornek": "El tren sale a las ocho.", "ornek_tr": "Tren sekizde kalkıyor."}, {"ispanyolca": "hotel", "turkce": "otel", "seviye": "A1", "ornek": "El hotel está cerca del centro.", "ornek_tr": "Otel merkeze yakın."}, {"ispanyolca": "restaurante", "turkce": "restoran", "seviye": "A1", "ornek": "Este restaurante es muy bueno.", "ornek_tr": "Bu restoran çok iyi."}, {"ispanyolca": "grande", "turkce": "büyük", "seviye": "A1", "ornek": "Tengo un perro grande.", "ornek_tr": "Büyük bir köpeğim var."}, {"ispanyolca": "bueno", "turkce": "iyi", "seviye": "A1", "ornek": "Esta idea es muy buena.", "ornek_tr": "Bu fikir çok iyi."}, {"ispanyolca": "malo", "turkce": "kötü", "seviye": "A1", "ornek": "El tiempo está malo.", "ornek_tr": "Hava kötü."}, {"ispanyolca": "feliz", "turkce": "mutlu", "seviye": "A1", "ornek": "Estoy muy feliz hoy.", "ornek_tr": "Bugün çok mutluyum."}, {"ispanyolca": "triste", "turkce": "üzgün", "seviye": "A1", "ornek": "¿Por qué estás triste?", "ornek_tr": "Neden üzgünsün?"}, {"ispanyolca": "blanco", "turkce": "beyaz", "seviye": "A1", "ornek": "La nieve es blanca.", "ornek_tr": "Kar beyaz."}, {"ispanyolca": "negro", "turkce": "siyah", "seviye": "A1", "ornek": "Tengo un gato negro.", "ornek_tr": "Siyah bir kedim var."}, {"ispanyolca": "rojo", "turkce": "kırmızı", "seviye": "A1", "ornek": "Me gustan las rosas rojas.", "ornek_tr": "Kırmızı gülleri seviyorum."}, {"ispanyolca": "azul", "turkce": "mavi", "seviye": "A1", "ornek": "El cielo es azul.", "ornek_tr": "Gökyüzü mavi."}, {"ispanyolca": "verde", "turkce": "yeşil", "seviye": "A1", "ornek": "Me gustan las manzanas verdes.", "ornek_tr": "Yeşil elmaları seviyorum."}, {"ispanyolca": "hoy", "turkce": "bugün", "seviye": "A1", "ornek": "Hoy es lunes.", "ornek_tr": "Bugün pazartesi."}, {"ispanyolca": "aquí", "turkce": "burada", "seviye": "A1", "ornek": "Estoy aquí.", "ornek_tr": "Buradayım."}, {"ispanyolca": "nunca", "turkce": "asla", "seviye": "A1", "ornek": "Nunca como carne.", "ornek_tr": "Hiç et yemem."}, {"ispanyolca": "ahora", "turkce": "şimdi", "seviye": "A1", "ornek": "Ahora mismo te llamo.", "ornek_tr": "Seni hemen şimdi arıyorum."}, {"ispanyolca": "después", "turkce": "sonra", "seviye": "A1", "ornek": "Hablamos después.", "ornek_tr": "Sonra konuşuruz."}, {"ispanyolca": "pero", "turkce": "ama", "seviye": "A1", "ornek": "Me gusta pero es caro.", "ornek_tr": "Seviyorum ama pahalı."}, {"ispanyolca": "mercado", "turkce": "market / pazar", "seviye": "A1", "ornek": "Voy al mercado los sábados.", "ornek_tr": "Cumartesi günleri pazara gidiyorum."}, {"ispanyolca": "hospital", "turkce": "hastane", "seviye": "A1", "ornek": "El hospital está lejos.", "ornek_tr": "Hastane uzakta."}, {"ispanyolca": "banco", "turkce": "banka", "seviye": "A1", "ornek": "Necesito ir al banco.", "ornek_tr": "Bankaya gitmem gerekiyor."}, {"ispanyolca": "caliente", "turkce": "sıcak (nesne)", "seviye": "A1", "ornek": "El café está muy caliente.", "ornek_tr": "Kahve çok sıcak."}, {"ispanyolca": "cansado", "turkce": "yorgun", "seviye": "A1", "ornek": "Estoy muy cansado.", "ornek_tr": "Çok yorgunum."}, {"ispanyolca": "guapo", "turkce": "yakışıklı", "seviye": "A1", "ornek": "Él es muy guapo.", "ornek_tr": "O çok yakışıklı."}, {"ispanyolca": "rico", "turkce": "zengin / lezzetli", "seviye": "A1", "ornek": "Esta comida está muy rica.", "ornek_tr": "Bu yemek çok lezzetli."}, {"ispanyolca": "largo", "turkce": "uzun", "seviye": "A1", "ornek": "El río es muy largo.", "ornek_tr": "Nehir çok uzun."}, {"ispanyolca": "usar", "turkce": "kullanmak", "seviye": "A1", "ornek": "¿Sabes usar este programa?", "ornek_tr": "Bu programı kullanmasını biliyor musun?"}, {"ispanyolca": "viajar", "turkce": "seyahat etmek", "seviye": "A1", "ornek": "Me encanta viajar.", "ornek_tr": "Seyahat etmeyi çok seviyorum."}, {"ispanyolca": "descansar", "turkce": "dinlenmek", "seviye": "A1", "ornek": "Necesito descansar.", "ornek_tr": "Dinlenmem gerekiyor."}, {"ispanyolca": "entender", "turkce": "anlamak", "seviye": "A2", "ornek": "No entiendo esta frase.", "ornek_tr": "Bu cümleyi anlamıyorum."}, {"ispanyolca": "recordar", "turkce": "hatırlamak", "seviye": "A2", "ornek": "¿Recuerdas mi nombre?", "ornek_tr": "Adımı hatırlıyor musun?"}, {"ispanyolca": "terminar", "turkce": "bitirmek", "seviye": "A2", "ornek": "Termino el trabajo a las cinco.", "ornek_tr": "İşi beşte bitiriyorum."}, {"ispanyolca": "cambiar", "turkce": "değiştirmek", "seviye": "A2", "ornek": "Quiero cambiar de trabajo.", "ornek_tr": "İş değiştirmek istiyorum."}, {"ispanyolca": "ganar", "turkce": "kazanmak", "seviye": "A2", "ornek": "Nuestro equipo ganó.", "ornek_tr": "Takımımız kazandı."}, {"ispanyolca": "perder", "turkce": "kaybetmek", "seviye": "A2", "ornek": "He perdido mis llaves.", "ornek_tr": "Anahtarlarımı kaybettim."}, {"ispanyolca": "conseguir", "turkce": "başarmak / elde etmek", "seviye": "A2", "ornek": "¡Lo conseguí!", "ornek_tr": "Başardım!"}, {"ispanyolca": "intentar", "turkce": "denemek", "seviye": "A2", "ornek": "Inténtalo otra vez.", "ornek_tr": "Tekrar dene."}, {"ispanyolca": "decidir", "turkce": "karar vermek", "seviye": "A2", "ornek": "He decidido estudiar más.", "ornek_tr": "Daha çok çalışmaya karar verdim."}, {"ispanyolca": "olvidar", "turkce": "unutmak", "seviye": "A2", "ornek": "Olvidé mi paraguas.", "ornek_tr": "Şemsiyemi unuttum."}, {"ispanyolca": "preparar", "turkce": "hazırlamak", "seviye": "A2", "ornek": "Preparo la cena.", "ornek_tr": "Akşam yemeğini hazırlıyorum."}, {"ispanyolca": "cocinar", "turkce": "yemek pişirmek", "seviye": "A2", "ornek": "Me gusta cocinar pasta.", "ornek_tr": "Makarna pişirmeyi seviyorum."}, {"ispanyolca": "nadar", "turkce": "yüzmek", "seviye": "A2", "ornek": "Nado en el mar en verano.", "ornek_tr": "Yazın denizde yüzüyorum."}, {"ispanyolca": "divertirse", "turkce": "eğlenmek", "seviye": "A2", "ornek": "Nos divertimos mucho.", "ornek_tr": "Çok eğlendik."}, {"ispanyolca": "despertarse", "turkce": "uyanmak", "seviye": "A2", "ornek": "Me despierto a las siete.", "ornek_tr": "Yedide uyanıyorum."}, {"ispanyolca": "levantarse", "turkce": "kalkmak", "seviye": "A2", "ornek": "Me levanto temprano.", "ornek_tr": "Erken kalkıyorum."}, {"ispanyolca": "ducharse", "turkce": "duş almak", "seviye": "A2", "ornek": "Me ducho por la mañana.", "ornek_tr": "Sabahları duş alıyorum."}, {"ispanyolca": "tranquilo", "turkce": "sakin / rahat", "seviye": "A2", "ornek": "Este pueblo es muy tranquilo.", "ornek_tr": "Bu köy çok sakin."}, {"ispanyolca": "nervioso", "turkce": "gergin / sinirli", "seviye": "A2", "ornek": "Estoy nervioso antes del examen.", "ornek_tr": "Sınavdan önce gerginim."}, {"ispanyolca": "aburrido", "turkce": "sıkılmış / sıkıcı", "seviye": "A2", "ornek": "Estoy aburrido en casa.", "ornek_tr": "Evde sıkılıyorum."}, {"ispanyolca": "interesante", "turkce": "ilginç", "seviye": "A2", "ornek": "Esta historia es muy interesante.", "ornek_tr": "Bu hikaye çok ilginç."}, {"ispanyolca": "reunión", "turkce": "toplantı", "seviye": "A2", "ornek": "Tengo una reunión a las diez.", "ornek_tr": "Saat onda toplantım var."}, {"ispanyolca": "empresa", "turkce": "şirket", "seviye": "A2", "ornek": "Trabajo en una empresa grande.", "ornek_tr": "Büyük bir şirkette çalışıyorum."}, {"ispanyolca": "vacaciones", "turkce": "tatil", "seviye": "A2", "ornek": "Voy de vacaciones a Italia.", "ornek_tr": "İtalya'ya tatile gidiyorum."}, {"ispanyolca": "aeropuerto", "turkce": "havalimanı", "seviye": "A2", "ornek": "El aeropuerto está muy lejos.", "ornek_tr": "Havalimanı çok uzakta."}, {"ispanyolca": "maleta", "turkce": "bavul", "seviye": "A2", "ornek": "Mi maleta es muy pesada.", "ornek_tr": "Bavulum çok ağır."}, {"ispanyolca": "extranjero", "turkce": "yabancı / yurt dışı", "seviye": "A2", "ornek": "Quiero vivir en el extranjero.", "ornek_tr": "Yurt dışında yaşamak istiyorum."}, {"ispanyolca": "diferente", "turkce": "farklı", "seviye": "A2", "ornek": "Somos muy diferentes.", "ornek_tr": "Çok farklıyız."}, {"ispanyolca": "especial", "turkce": "özel", "seviye": "A2", "ornek": "Hoy es un día especial.", "ornek_tr": "Bugün özel bir gün."}, {"ispanyolca": "libre", "turkce": "özgür / boş", "seviye": "A2", "ornek": "¿Estás libre esta tarde?", "ornek_tr": "Bu öğleden sonra boş musun?"}, {"ispanyolca": "seguro", "turkce": "güvenli / emin", "seviye": "A2", "ornek": "Estoy seguro de eso.", "ornek_tr": "Bundan eminim."}, {"ispanyolca": "mejor", "turkce": "daha iyi", "seviye": "A2", "ornek": "Hoy me siento mejor.", "ornek_tr": "Bugün kendimi daha iyi hissediyorum."}, {"ispanyolca": "preferir", "turkce": "tercih etmek", "seviye": "A2", "ornek": "Prefiero el café al té.", "ornek_tr": "Çaya kahveyi tercih ederim."}, {"ispanyolca": "probar", "turkce": "denemek / tatmak", "seviye": "A2", "ornek": "¿Quieres probar este plato?", "ornek_tr": "Bu yemeği denemek ister misin?"}], "kategoriler": {"yemek": [{"ispanyolca": "desayuno", "turkce": "kahvaltı", "ornek": "El desayuno es la comida más importante.", "ornek_tr": "Kahvaltı en önemli öğündür."}, {"ispanyolca": "almuerzo", "turkce": "öğle yemeği", "ornek": "Comemos el almuerzo a las dos.", "ornek_tr": "Öğle yemeğini ikide yiyoruz."}, {"ispanyolca": "cena", "turkce": "akşam yemeği", "ornek": "La cena está lista.", "ornek_tr": "Akşam yemeği hazır."}, {"ispanyolca": "pan", "turkce": "ekmek", "ornek": "Compro pan cada mañana.", "ornek_tr": "Her sabah ekmek alıyorum."}, {"ispanyolca": "queso", "turkce": "peynir", "ornek": "Me encanta el queso.", "ornek_tr": "Peyniri çok seviyorum."}, {"ispanyolca": "carne", "turkce": "et", "ornek": "No como carne roja.", "ornek_tr": "Kırmızı et yemiyorum."}, {"ispanyolca": "pollo", "turkce": "tavuk", "ornek": "El pollo a la plancha está delicioso.", "ornek_tr": "Izgara tavuk çok lezzetli."}, {"ispanyolca": "pescado", "turkce": "balık", "ornek": "Como pescado los viernes.", "ornek_tr": "Cumaları balık yerim."}, {"ispanyolca": "verdura", "turkce": "sebze", "ornek": "Necesito comer más verduras.", "ornek_tr": "Daha fazla sebze yemem gerekiyor."}, {"ispanyolca": "fruta", "turkce": "meyve", "ornek": "La fruta es muy saludable.", "ornek_tr": "Meyve çok sağlıklı."}, {"ispanyolca": "huevo", "turkce": "yumurta", "ornek": "Me gustan los huevos revueltos.", "ornek_tr": "Scrambled egg'i seviyorum."}, {"ispanyolca": "arroz", "turkce": "pirinç", "ornek": "El arroz con leche está bueno.", "ornek_tr": "Sütlaç güzel."}, {"ispanyolca": "pasta", "turkce": "makarna", "ornek": "La pasta italiana es deliciosa.", "ornek_tr": "İtalyan makarnaları lezzetli."}, {"ispanyolca": "sopa", "turkce": "çorba", "ornek": "La sopa está muy caliente.", "ornek_tr": "Çorba çok sıcak."}, {"ispanyolca": "postre", "turkce": "tatlı", "ornek": "¿Qué hay de postre?", "ornek_tr": "Tatlı olarak ne var?"}, {"ispanyolca": "bebida", "turkce": "içecek", "ornek": "¿Qué bebida quieres?", "ornek_tr": "Ne içmek istiyorsun?"}, {"ispanyolca": "zumo", "turkce": "meyve suyu", "ornek": "Un zumo de naranja, por favor.", "ornek_tr": "Bir portakal suyu, lütfen."}, {"ispanyolca": "vino", "turkce": "şarap", "ornek": "España tiene muy buen vino.", "ornek_tr": "İspanya'nın şarabı çok iyi."}, {"ispanyolca": "cerveza", "turkce": "bira", "ornek": "Una cerveza fría, por favor.", "ornek_tr": "Soğuk bir bira, lütfen."}, {"ispanyolca": "café", "turkce": "kahve", "ornek": "El café español es muy fuerte.", "ornek_tr": "İspanyol kahvesi çok kuvvetli."}], "seyahat": [{"ispanyolca": "vuelo", "turkce": "uçuş", "ornek": "Mi vuelo sale a las diez.", "ornek_tr": "Uçuşum saat onda kalkıyor."}, {"ispanyolca": "pasaje", "turkce": "bilet", "ornek": "Compré un pasaje de avión.", "ornek_tr": "Uçak bileti aldım."}, {"ispanyolca": "pasaporte", "turkce": "pasaport", "ornek": "No olvides tu pasaporte.", "ornek_tr": "Pasaportunu unutma."}, {"ispanyolca": "aduana", "turkce": "gümrük", "ornek": "Pasamos por la aduana.", "ornek_tr": "Gümrükten geçiyoruz."}, {"ispanyolca": "equipaje", "turkce": "bagaj", "ornek": "Mi equipaje es muy pesado.", "ornek_tr": "Bagajım çok ağır."}, {"ispanyolca": "habitación", "turkce": "oda", "ornek": "La habitación tiene vista al mar.", "ornek_tr": "Odanın deniz manzarası var."}, {"ispanyolca": "reservar", "turkce": "rezervasyon yapmak", "ornek": "Quiero reservar una mesa.", "ornek_tr": "Masa rezervasyonu yapmak istiyorum."}, {"ispanyolca": "mapa", "turkce": "harita", "ornek": "¿Tienes un mapa de la ciudad?", "ornek_tr": "Şehrin haritası var mı?"}, {"ispanyolca": "turista", "turkce": "turist", "ornek": "Hay muchos turistas en verano.", "ornek_tr": "Yazın çok turist var."}, {"ispanyolca": "guía", "turkce": "rehber / kılavuz", "ornek": "Necesitamos un guía turístico.", "ornek_tr": "Bir tur rehberine ihtiyacımız var."}, {"ispanyolca": "playa", "turkce": "plaj / sahil", "ornek": "La playa está muy cerca.", "ornek_tr": "Plaj çok yakın."}, {"ispanyolca": "montaña", "turkce": "dağ", "ornek": "Me encanta caminar en la montaña.", "ornek_tr": "Dağda yürümeyi çok seviyorum."}, {"ispanyolca": "museo", "turkce": "müze", "ornek": "El museo abre a las nueve.", "ornek_tr": "Müze dokuzda açılıyor."}, {"ispanyolca": "iglesia", "turkce": "kilise", "ornek": "La iglesia es muy antigua.", "ornek_tr": "Kilise çok eski."}, {"ispanyolca": "autobús", "turkce": "otobüs", "ornek": "El autobús llega en cinco minutos.", "ornek_tr": "Otobüs beş dakikada geliyor."}], "is": [{"ispanyolca": "oficina", "turkce": "ofis", "ornek": "Trabajo en una oficina pequeña.", "ornek_tr": "Küçük bir ofiste çalışıyorum."}, {"ispanyolca": "reunión", "turkce": "toplantı", "ornek": "Tengo una reunión importante.", "ornek_tr": "Önemli bir toplantım var."}, {"ispanyolca": "contrato", "turkce": "sözleşme", "ornek": "Firmo el contrato mañana.", "ornek_tr": "Yarın sözleşmeyi imzalıyorum."}, {"ispanyolca": "sueldo", "turkce": "maaş", "ornek": "Mi sueldo es bueno.", "ornek_tr": "Maaşım iyi."}, {"ispanyolca": "jefe", "turkce": "patron / şef", "ornek": "Mi jefe es muy exigente.", "ornek_tr": "Patronum çok talepkâr."}, {"ispanyolca": "colega", "turkce": "iş arkadaşı", "ornek": "Mis colegas son muy simpáticos.", "ornek_tr": "İş arkadaşlarım çok sempatik."}, {"ispanyolca": "proyecto", "turkce": "proje", "ornek": "Trabajo en un proyecto nuevo.", "ornek_tr": "Yeni bir projede çalışıyorum."}, {"ispanyolca": "plazo", "turkce": "son tarih / süre", "ornek": "El plazo es el viernes.", "ornek_tr": "Son tarih cuma."}, {"ispanyolca": "entrevista", "turkce": "mülakat / röportaj", "ornek": "Tengo una entrevista de trabajo.", "ornek_tr": "İş mülakatım var."}, {"ispanyolca": "ordenador", "turkce": "bilgisayar", "ornek": "Necesito un ordenador nuevo.", "ornek_tr": "Yeni bir bilgisayara ihtiyacım var."}, {"ispanyolca": "correo electrónico", "turkce": "e-posta", "ornek": "Te mando un correo electrónico.", "ornek_tr": "Sana e-posta gönderiyorum."}, {"ispanyolca": "presentación", "turkce": "sunum", "ornek": "Hago una presentación mañana.", "ornek_tr": "Yarın sunum yapıyorum."}], "sayilar": [{"ispanyolca": "uno", "turkce": "bir", "ornek": "Tengo un hijo.", "ornek_tr": "Bir oğlum var."}, {"ispanyolca": "dos", "turkce": "iki", "ornek": "Son las dos.", "ornek_tr": "Saat iki."}, {"ispanyolca": "tres", "turkce": "üç", "ornek": "Necesito tres minutos.", "ornek_tr": "Üç dakikaya ihtiyacım var."}, {"ispanyolca": "cuatro", "turkce": "dört", "ornek": "Tengo cuatro gatos.", "ornek_tr": "Dört kedim var."}, {"ispanyolca": "cinco", "turkce": "beş", "ornek": "Vivo en el piso cinco.", "ornek_tr": "Beşinci katta yaşıyorum."}, {"ispanyolca": "diez", "turkce": "on", "ornek": "Tengo diez euros.", "ornek_tr": "On euroum var."}, {"ispanyolca": "veinte", "turkce": "yirmi", "ornek": "Tengo veinte años.", "ornek_tr": "Yirmi yaşındayım."}, {"ispanyolca": "cien", "turkce": "yüz", "ornek": "Cuesta cien euros.", "ornek_tr": "Yüz euroya mal oluyor."}, {"ispanyolca": "primero", "turkce": "birinci", "ornek": "Soy el primero.", "ornek_tr": "Ben birinciyim."}, {"ispanyolca": "segundo", "turkce": "ikinci", "ornek": "Llego en segundo lugar.", "ornek_tr": "İkinci sırada geliyorum."}]}, "fiilCekimleri": [{"fiil": "hablar", "anlam": "konuşmak", "tip": "düzenli -ar", "cekimler": {"yo": "hablo", "tú": "hablas", "él/ella": "habla", "nosotros": "hablamos", "vosotros": "habláis", "ellos": "hablan"}, "ornek": "Yo hablo español todos los días.", "ornek_tr": "Her gün İspanyolca konuşuyorum."}, {"fiil": "comer", "anlam": "yemek yemek", "tip": "düzenli -er", "cekimler": {"yo": "como", "tú": "comes", "él/ella": "come", "nosotros": "comemos", "vosotros": "coméis", "ellos": "comen"}, "ornek": "Ella come pizza todos los viernes.", "ornek_tr": "Her cuma pizza yer."}, {"fiil": "vivir", "anlam": "yaşamak", "tip": "düzenli -ir", "cekimler": {"yo": "vivo", "tú": "vives", "él/ella": "vive", "nosotros": "vivimos", "vosotros": "vivís", "ellos": "viven"}, "ornek": "Vivimos en una ciudad grande.", "ornek_tr": "Büyük bir şehirde yaşıyoruz."}, {"fiil": "ser", "anlam": "olmak (kalıcı)", "tip": "düzensiz", "cekimler": {"yo": "soy", "tú": "eres", "él/ella": "es", "nosotros": "somos", "vosotros": "sois", "ellos": "son"}, "ornek": "Somos estudiantes de español.", "ornek_tr": "İspanyolca öğrencisiyiz."}, {"fiil": "estar", "anlam": "olmak (geçici/yer)", "tip": "düzensiz", "cekimler": {"yo": "estoy", "tú": "estás", "él/ella": "está", "nosotros": "estamos", "vosotros": "estáis", "ellos": "están"}, "ornek": "Estamos muy contentos hoy.", "ornek_tr": "Bugün çok mutluyuz."}, {"fiil": "tener", "anlam": "sahip olmak", "tip": "düzensiz", "cekimler": {"yo": "tengo", "tú": "tienes", "él/ella": "tiene", "nosotros": "tenemos", "vosotros": "tenéis", "ellos": "tienen"}, "ornek": "Tengo muchos amigos en España.", "ornek_tr": "İspanya'da çok arkadaşım var."}, {"fiil": "ir", "anlam": "gitmek", "tip": "düzensiz", "cekimler": {"yo": "voy", "tú": "vas", "él/ella": "va", "nosotros": "vamos", "vosotros": "vais", "ellos": "van"}, "ornek": "¿A dónde vas este fin de semana?", "ornek_tr": "Bu hafta sonu nereye gidiyorsun?"}, {"fiil": "poder", "anlam": "yapabilmek", "tip": "düzensiz (o→ue)", "cekimler": {"yo": "puedo", "tú": "puedes", "él/ella": "puede", "nosotros": "podemos", "vosotros": "podéis", "ellos": "pueden"}, "ornek": "¿Puedes venir mañana?", "ornek_tr": "Yarın gelebilir misin?"}, {"fiil": "querer", "anlam": "istemek / sevmek", "tip": "düzensiz (e→ie)", "cekimler": {"yo": "quiero", "tú": "quieres", "él/ella": "quiere", "nosotros": "queremos", "vosotros": "queréis", "ellos": "quieren"}, "ornek": "Quiero aprender muchos idiomas.", "ornek_tr": "Çok dil öğrenmek istiyorum."}, {"fiil": "hacer", "anlam": "yapmak", "tip": "düzensiz", "cekimler": {"yo": "hago", "tú": "haces", "él/ella": "hace", "nosotros": "hacemos", "vosotros": "hacéis", "ellos": "hacen"}, "ornek": "Hago deporte cada día.", "ornek_tr": "Her gün spor yapıyorum."}], "zorKelimeler": [{"ispanyolca": "sin embargo", "ingilizce": "however / nevertheless", "seviye": "B1", "ornek": "Es difícil, sin embargo lo intento.", "ornek_tr": "Zor, ama yine de deniyorum."}, {"ispanyolca": "aunque", "ingilizce": "although / even though", "seviye": "B1", "ornek": "Aunque llueve, salgo.", "ornek_tr": "Yağmur yağsa da çıkıyorum."}, {"ispanyolca": "además", "ingilizce": "furthermore / in addition", "seviye": "B1", "ornek": "Además, habla tres idiomas.", "ornek_tr": "Bunun yanı sıra üç dil konuşuyor."}, {"ispanyolca": "por lo tanto", "ingilizce": "therefore / thus", "seviye": "B1", "ornek": "Estudié mucho, por lo tanto aprobé.", "ornek_tr": "Çok çalıştım, bu yüzden geçtim."}, {"ispanyolca": "en cambio", "ingilizce": "on the other hand", "seviye": "B1", "ornek": "Ella trabaja; en cambio, él descansa.", "ornek_tr": "O çalışıyor; öte yandan o dinleniyor."}, {"ispanyolca": "mientras tanto", "ingilizce": "meanwhile", "seviye": "B1", "ornek": "Mientras tanto, yo preparo la comida.", "ornek_tr": "Bu arada ben yemeği hazırlıyorum."}, {"ispanyolca": "a pesar de", "ingilizce": "despite / in spite of", "seviye": "B1", "ornek": "A pesar del frío, salió a correr.", "ornek_tr": "Soğuğa rağmen koşmaya çıktı."}, {"ispanyolca": "debido a", "ingilizce": "due to / because of", "seviye": "B1", "ornek": "Debido a la lluvia, cancelamos.", "ornek_tr": "Yağmur nedeniyle iptal ettik."}, {"ispanyolca": "acostumbrarse", "ingilizce": "to get used to", "seviye": "B1", "ornek": "Me estoy acostumbrando al clima.", "ornek_tr": "İklime alışıyorum."}, {"ispanyolca": "aprovechar", "ingilizce": "to take advantage of / to make the most of", "seviye": "B1", "ornek": "Hay que aprovechar el tiempo.", "ornek_tr": "Zamandan yararlanmak gerekiyor."}, {"ispanyolca": "desarrollar", "ingilizce": "to develop", "seviye": "B1", "ornek": "Quiero desarrollar mis habilidades.", "ornek_tr": "Becerilerimi geliştirmek istiyorum."}, {"ispanyolca": "establecer", "ingilizce": "to establish / to set up", "seviye": "B1", "ornek": "Van a establecer nuevas reglas.", "ornek_tr": "Yeni kurallar belirleyecekler."}, {"ispanyolca": "superar", "ingilizce": "to overcome / to surpass", "seviye": "B1", "ornek": "Pudo superar sus miedos.", "ornek_tr": "Korkularını aşabildi."}, {"ispanyolca": "lograr", "ingilizce": "to achieve / to manage to", "seviye": "B1", "ornek": "Logré terminar el proyecto.", "ornek_tr": "Projeyi bitirmeyi başardım."}, {"ispanyolca": "demostrar", "ingilizce": "to demonstrate / to prove", "seviye": "B1", "ornek": "Demuestra que puedes hacerlo.", "ornek_tr": "Yapabileceğini kanıtla."}, {"ispanyolca": "imprescindible", "ingilizce": "essential / indispensable", "seviye": "B1", "ornek": "El agua es imprescindible para la vida.", "ornek_tr": "Su, hayat için vazgeçilmezdir."}, {"ispanyolca": "cotidiano", "ingilizce": "everyday / daily", "seviye": "B1", "ornek": "La rutina cotidiana es importante.", "ornek_tr": "Günlük rutin önemlidir."}, {"ispanyolca": "agotador", "ingilizce": "exhausting", "seviye": "B1", "ornek": "Este trabajo es muy agotador.", "ornek_tr": "Bu iş çok yorucu."}, {"ispanyolca": "impresionante", "ingilizce": "impressive / stunning", "seviye": "B1", "ornek": "El paisaje es impresionante.", "ornek_tr": "Manzara muhteşem."}, {"ispanyolca": "consecuencia", "ingilizce": "consequence", "seviye": "B1", "ornek": "Todo tiene una consecuencia.", "ornek_tr": "Her şeyin bir sonucu vardır."}, {"ispanyolca": "responsabilidad", "ingilizce": "responsibility", "seviye": "B1", "ornek": "Es mi responsabilidad.", "ornek_tr": "Bu benim sorumluluğum."}, {"ispanyolca": "comportamiento", "ingilizce": "behavior / conduct", "seviye": "B1", "ornek": "Su comportamiento es extraño.", "ornek_tr": "Davranışı garip."}, {"ispanyolca": "conocimiento", "ingilizce": "knowledge", "seviye": "B1", "ornek": "El conocimiento es poder.", "ornek_tr": "Bilgi güçtür."}, {"ispanyolca": "oportunidad", "ingilizce": "opportunity / chance", "seviye": "A2-son", "ornek": "Es una gran oportunidad.", "ornek_tr": "Bu büyük bir fırsat."}, {"ispanyolca": "experiencia", "ingilizce": "experience", "seviye": "A2-son", "ornek": "Tengo mucha experiencia.", "ornek_tr": "Çok deneyimim var."}, {"ispanyolca": "objetivo", "ingilizce": "objective / goal", "seviye": "A2-son", "ornek": "Mi objetivo es aprender español.", "ornek_tr": "Hedefim İspanyolca öğrenmek."}, {"ispanyolca": "perspectiva", "ingilizce": "perspective / outlook", "seviye": "B1", "ornek": "Tienes que cambiar tu perspectiva.", "ornek_tr": "Bakış açını değiştirmen gerekiyor."}, {"ispanyolca": "ventaja", "ingilizce": "advantage", "seviye": "A2-son", "ornek": "Hablar idiomas es una ventaja.", "ornek_tr": "Dil bilmek bir avantaj."}, {"ispanyolca": "propósito", "ingilizce": "purpose / intention", "seviye": "B1", "ornek": "¿Cuál es el propósito?", "ornek_tr": "Amaç nedir?"}, {"ispanyolca": "herramienta", "ingilizce": "tool", "seviye": "B1", "ornek": "Es una herramienta muy útil.", "ornek_tr": "Çok kullanışlı bir araç."}]};
+let XP=0,STREAK=0,darkMode=false;
+let stats={};
+let bizimDone=0,yeniDone=0,curYeniLevel='A1';
+// Quiz
+let qWords=[],qIdx=0,qC=0,qW=0,qH=3,qType='bizim';
+// Sentence builder
+let sbWords=[],sbCurTab='bizim';
+// Challenge
+let chalType='',chalWords=[],chalIdx=0,chalC=0,chalW=0,chalBuilt=[];
+// Hard
+let hardWords=[],hardIdx=0,hardC=0,hardW=0;
+// Verb quiz
+let vqWords=[],vqIdx=0,vqC=0,vqW=0;
+// Vocab
+let vocabCurFilter='all';
+let expandedWord=null;
+// Cat
+let curCat='yemek';
+
+// ════════════════════════════════════════════
+//  BOOT
+// ════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  try{const s=localStorage.getItem('vl_stats');if(s)stats=JSON.parse(s);}catch(e){}
+  try{XP=+(localStorage.getItem('vl_xp')||0);STREAK=+(localStorage.getItem('vl_streak')||0);}catch(e){}
+  try{darkMode=localStorage.getItem('vl_dark')==='1';if(darkMode){document.documentElement.setAttribute('data-theme','dark');document.getElementById('dark-btn').classList.add('on');}}catch(e){}
+  updateHeader();
+  setGreeting();
+  // Data pre-loaded
+    renderBizimPath();
+    renderYeniPath();
+    sbLoad();
+    renderVerbs();
+    renderCatTabs();
+    loadDailyWord();
+    console.log('✅ Data yuklendi');
+  // Mascot blink
+  setInterval(()=>{
+    const el=document.getElementById('eye-l');
+    const er=document.getElementById('eye-r');
+    if(!el||!er)return;
+    el.setAttribute('ry','0.5');er.setAttribute('ry','0.5');
+    setTimeout(()=>{el.setAttribute('ry','5.5');er.setAttribute('ry','5.5');},120);
+  },3500);
+});
+
+function save(){
+  try{localStorage.setItem('vl_stats',JSON.stringify(stats));localStorage.setItem('vl_xp',XP);localStorage.setItem('vl_streak',STREAK);}catch(e){}
+}
+function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]]}return r;}
+function getAcc(key){const s=stats[key];if(!s||(s.c+s.w)===0)return null;return Math.round(s.c/(s.c+s.w)*100);}
+function recResult(key,ok){if(!stats[key])stats[key]={c:0,w:0};if(ok)stats[key].c++;else stats[key].w++;save();}
+function updateHeader(){
+  document.getElementById('hdr-xp').textContent=XP+' XP';
+  document.getElementById('hdr-streak').textContent=STREAK;
+  if(STREAK>0){const el=document.getElementById('stat-streak');el.style.animation='streakPop .5s ease';setTimeout(()=>el.style.animation='',600);}
+}
+
+function toggleDark(){
+  darkMode=!darkMode;
+  document.documentElement.setAttribute('data-theme',darkMode?'dark':'light');
+  document.getElementById('dark-btn').classList.toggle('on',darkMode);
+  try{localStorage.setItem('vl_dark',darkMode?'1':'0');}catch(e){}
+}
+
+function setGreeting(){
+  const h=new Date().getHours();
+  const g=h<12?'¡Buenos días! 🌅':h<18?'¡Buenas tardes! ☀️':'¡Buenas noches! 🌙';
+  const el=document.getElementById('greeting-text');
+  if(el)el.textContent=g+' Bugün ne öğreneceğiz?';
+}
+
+// ════════════════════════════════════════════
+//  PAGE NAV
+// ════════════════════════════════════════════
+const PAGES=['journey','vocab','verbs','cats','challenge','hard'];
+function showPage(p){
+  PAGES.forEach(pg=>{
+    document.getElementById('page-'+pg).style.display=pg===p?'block':'none';
+    const nb=document.getElementById('nav-'+pg);
+    if(nb)nb.classList.toggle('on',pg===p);
+  });
+  if(p==='vocab')renderVocab(vocabCurFilter);
+  if(p==='cats'){renderCatTabs();renderCat(curCat);}
+}
+
+// ════════════════════════════════════════════
+//  PATH
+// ════════════════════════════════════════════
+const BIZ_GROUPS=[
+  {e:'🌱',l:'Başlangıç',n:10},{e:'📗',l:'Temel',n:15},{e:'⭐',l:'İleri',n:15},
+  {e:'🏆',l:'Uzman',n:20},{e:'💎',l:'Usta',n:20},{e:'🌟',l:'Efsane',n:16}
+];
+function renderBizimPath(){
+  const total=DB.bizimKelimeler.length;
+  document.getElementById('biz-prog-txt').textContent=bizimDone+'/'+total;
+  document.getElementById('biz-prog-bar').style.width=(total?bizimDone/total*100:0)+'%';
+  let html='',cumul=0;
+  BIZ_GROUPS.forEach((g,i)=>{
+    const isDone=bizimDone>=cumul+g.n;
+    const isActive=!isDone&&bizimDone>=cumul;
+    const cls=isDone?'done-g':isActive?'active-g':'locked';
+    const pct=isDone?100:isActive?Math.round((bizimDone-cumul)/g.n*100):0;
+    html+=`<div style="display:flex;flex-direction:column;align-items:center">
+      <div class="path-node ${cls}" onclick="startQuiz('bizim')" title="${g.l}">${g.e}
+        ${isActive?`<span class="path-pct">${pct}%</span>`:''}
+        ${isDone?'<span class="path-pct" style="background:#4ade80;color:#014d00">✓</span>':''}
+      </div>
+      <div class="path-label" style="color:${isDone?'var(--primary)':'var(--muted)'}">${g.l}</div>
+      ${i<BIZ_GROUPS.length-1?`<div class="path-line path-line-g" style="${isDone?'':'opacity:.3'}"></div>`:''}
+    </div>`;
+    cumul+=g.n;
+  });
+  document.getElementById('biz-path').innerHTML=html;
+}
+
+const YENI_GROUPS=[
+  {e:'🔵',l:'Seviye 1',n:12},{e:'🟡',l:'Seviye 2',n:15},{e:'🟠',l:'Seviye 3',n:18},
+  {e:'🔴',l:'Seviye 4',n:20},{e:'⚡',l:'Seviye 5',n:20},{e:'🏅',l:'Tamamla',n:14}
+];
+function renderYeniPath(){
+  const words=DB.yeniKelimeler.filter(w=>w.seviye===curYeniLevel);
+  const total=words.length;
+  document.getElementById('yeni-prog-txt').textContent=yeniDone+'/'+total;
+  document.getElementById('yeni-prog-bar').style.width=(total?yeniDone/total*100:0)+'%';
+  let html='',cumul=0;
+  YENI_GROUPS.forEach((g,i)=>{
+    const isDone=yeniDone>=cumul+g.n;
+    const isActive=!isDone&&yeniDone>=cumul;
+    const cls=isDone?'done-y':isActive?'active-y':'locked';
+    const pct=isDone?100:isActive?Math.round((yeniDone-cumul)/Math.max(1,g.n)*100):0;
+    html+=`<div style="display:flex;flex-direction:column;align-items:center">
+      <div class="path-node ${cls}" onclick="startQuiz('yeni')" title="${g.l}">${g.e}
+        ${isActive?`<span class="path-pct path-pct-y">${pct}%</span>`:''}
+        ${isDone?'<span class="path-pct path-pct-y">✓</span>':''}
+      </div>
+      <div class="path-label" style="color:${isDone?'var(--gold)':'var(--muted)'}">${g.l}</div>
+      ${i<YENI_GROUPS.length-1?`<div class="path-line path-line-y" style="${isDone?'':'opacity:.3'}"></div>`:''}
+    </div>`;
+    cumul+=g.n;
+  });
+  document.getElementById('yeni-path').innerHTML=html;
+}
+
+function yeniLevel(l){
+  curYeniLevel=l;yeniDone=0;
+  document.getElementById('ynl-a1').className='btn btn-sm '+(l==='A1'?'btn-gold':'btn-outline');
+  document.getElementById('ynl-a2').className='btn btn-sm '+(l==='A2'?'btn-gold':'btn-outline');
+  renderYeniPath();
+}
+
+// ════════════════════════════════════════════
+//  DAILY WORD
+// ════════════════════════════════════════════
+let dailyWordObj=null;
+function loadDailyWord(){
+  const pool=[...DB.bizimKelimeler,...DB.yeniKelimeler.filter(w=>w.seviye==='A1')];
+  if(!pool.length)return;
+  dailyWordObj=shuffle(pool)[0];
+  document.getElementById('dw-word').textContent=dailyWordObj.ispanyolca;
+  document.getElementById('dw-tr').textContent=dailyWordObj.turkce;
+  document.getElementById('dw-example').innerHTML=dailyWordObj.ornek
+    ?`<em>"${dailyWordObj.ornek}"</em><br><span style="color:var(--primary);font-style:normal;font-weight:600">${dailyWordObj.ornek_tr}</span>`
+    :'';
+}
+function speakWord(){
+  if(!dailyWordObj)return;
+  const u=new SpeechSynthesisUtterance(dailyWordObj.ispanyolca);
+  u.lang='es-ES';u.rate=0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+  const btn=document.getElementById('dw-speak');
+  btn.textContent='🔊 Çalıyor...';
+  u.onend=()=>btn.textContent='🔊 Dinle';
+}
+function speakText(txt){
+  const u=new SpeechSynthesisUtterance(txt);
+  u.lang='es-ES';u.rate=0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+// ════════════════════════════════════════════
+//  QUIZ ENGINE
+// ════════════════════════════════════════════
+function startQuiz(type){
+  qType=type;qIdx=0;qC=0;qW=0;qH=3;
+  qWords=type==='bizim'
+    ?shuffle([...DB.bizimKelimeler]).slice(0,10)
+    :shuffle(DB.yeniKelimeler.filter(w=>w.seviye===curYeniLevel)).slice(0,10);
+  const ov=document.getElementById('quiz-ov');
+  ov.style.display='flex';
+  const box=document.getElementById('quiz-box');
+  box.classList.remove('anim-modalIn');void box.offsetWidth;box.classList.add('anim-modalIn');
+  renderQ();
+}
+function closeQuiz(){document.getElementById('quiz-ov').style.display='none';}
+function closeResult(){document.getElementById('res-ov').style.display='none';renderBizimPath();renderYeniPath();}
+
+function renderQ(){
+  if(qIdx>=qWords.length||qH<=0){closeQuiz();showResult();return;}
+  const w=qWords[qIdx];
+  document.getElementById('q-counter').textContent=(qIdx+1)+'/'+qWords.length;
+  document.getElementById('q-prog').style.width=(qIdx/qWords.length*100)+'%';
+  document.getElementById('q-hearts').textContent='❤️'.repeat(qH)+'🖤'.repeat(3-qH);
+  const mode=qIdx%3;
+  if(mode===0) renderMC(w);
+  else if(mode===1) renderType(w);
+  else renderFlip(w);
+}
+
+function renderMC(w){
+  const pool=qType==='bizim'?DB.bizimKelimeler:DB.yeniKelimeler.filter(x=>x.seviye===curYeniLevel);
+  const wrongs=shuffle(pool.filter(x=>x.ispanyolca!==w.ispanyolca)).slice(0,3);
+  const choices=shuffle([w,...wrongs]);
+  document.getElementById('q-body').innerHTML=`
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Bu kelimenin Türkçesi nedir?</div>
+      <div style="display:inline-flex;align-items:center;gap:12px;background:var(--primary-bg);border:2.5px solid var(--primary-l);border-radius:20px;padding:16px 28px">
+        <div style="font-size:34px;font-weight:900;color:var(--primary)">${w.ispanyolca}</div>
+        <button onclick="speakText('${w.ispanyolca.replace(/'/g,"\\'")}');" style="background:none;border:none;cursor:pointer;font-size:20px" title="Dinle">🔊</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="mc-wrap">
+      ${choices.map(c=>`<button class="mc-btn" onclick="checkMC(this,'${c.turkce.replace(/'/g,"&#39;")}','${w.turkce.replace(/'/g,"&#39;")}')">${c.turkce}</button>`).join('')}
+    </div>`;
+  document.getElementById('q-foot').innerHTML='';
+}
+
+function renderType(w){
+  document.getElementById('q-body').innerHTML=`
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">İspanyolcasını yaz</div>
+      <div style="display:inline-block;background:var(--gold-bg);border:2.5px solid var(--gold-l);border-radius:18px;padding:14px 28px;margin-bottom:16px">
+        <div style="font-size:26px;font-weight:900;color:var(--gold)">${w.turkce}</div>
+      </div>
+      <br/>
+      <input class="quiz-input" id="type-inp" type="text" placeholder="İspanyolcasını yaz..." autocomplete="off" autocorrect="off" spellcheck="false"/>
+      <div id="type-hint" style="height:22px;margin-top:8px;font-size:13px;font-weight:700;text-align:center"></div>
+      ${w.ornek?`<div style="margin-top:10px;padding:10px;background:var(--bg);border-radius:10px;font-size:12px;color:var(--muted);font-style:italic">💡 İpucu: ${w.ornek_tr||''}</div>`:''}
+    </div>`;
+  document.getElementById('q-foot').innerHTML=`<button class="btn btn-primary btn-lg btn-block" onclick="checkType('${w.ispanyolca.replace(/'/g,"&#39;")}','${w.turkce.replace(/'/g,"&#39;")}')">Kontrol Et ✓</button>`;
+  setTimeout(()=>{const i=document.getElementById('type-inp');if(i){i.focus();i.onkeydown=e=>{if(e.key==='Enter')checkType('${w.ispanyolca}','${w.turkce}');};}},80);
+}
+
+function checkType(correct,tr){
+  const inp=document.getElementById('type-inp');
+  if(!inp)return;
+  const ans=inp.value.trim().toLowerCase();
+  const variants=correct.toLowerCase().split('/').map(v=>v.trim());
+  const ok=variants.some(v=>ans===v);
+  if(ok){
+    inp.classList.add('ok');
+    document.getElementById('type-hint').innerHTML='<span style="color:#16a34a">✅ Harika!</span>';
+    onCorrect(qWords[qIdx]);
+    setTimeout(()=>{qIdx++;renderQ();},900);
+  } else {
+    inp.classList.add('err');
+    document.getElementById('type-hint').innerHTML=`<span style="color:#dc2626">❌ Doğrusu: <strong>${correct}</strong></span>`;
+    onWrong(qWords[qIdx]);
+    setTimeout(()=>{qIdx++;renderQ();},2200);
+  }
+}
+
+function renderFlip(w){
+  document.getElementById('q-body').innerHTML=`
+    <div style="text-align:center;margin-bottom:14px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Kartı çevir!</div>
+    </div>
+    <div style="perspective:800px;cursor:pointer;max-width:340px;margin:0 auto" onclick="flipCard()">
+      <div id="flip-in" style="position:relative;height:160px;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,.2,.2,1)">
+        <div style="position:absolute;inset:0;backface-visibility:hidden;background:var(--primary-bg);border:2.5px solid var(--primary-l);border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+          <button onclick="event.stopPropagation();speakText('${w.ispanyolca.replace(/'/g,"\\'")}');" style="position:absolute;top:10px;right:12px;background:none;border:none;cursor:pointer;font-size:18px">🔊</button>
+          <div style="font-size:32px;font-weight:900;color:var(--primary)">${w.ispanyolca}</div>
+          <div style="font-size:12px;color:var(--muted);font-weight:600">👆 tıkla</div>
+        </div>
+        <div style="position:absolute;inset:0;backface-visibility:hidden;transform:rotateY(180deg);background:var(--gold-bg);border:2.5px solid var(--gold-l);border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+          <div style="font-size:26px;font-weight:900;color:var(--gold)">${w.turkce}</div>
+          ${w.ornek?`<div style="font-size:11px;color:var(--muted);font-style:italic;max-width:240px;text-align:center">${w.ornek}</div>`:''}
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('q-foot').innerHTML=`
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button onclick="flipAns(false)" style="flex:1;padding:14px;border-radius:14px;border:2.5px solid #dc2626;background:var(--card);color:#dc2626;font-weight:800;font-size:13px;cursor:pointer">😕 Hatırlamadım</button>
+      <button onclick="flipAns(true)" class="btn btn-primary" style="flex:1;padding:14px;font-size:13px">✅ Hatırladım!</button>
+    </div>`;
+}
+let flipped=false;
+function flipCard(){flipped=!flipped;const fi=document.getElementById('flip-in');if(fi)fi.style.transform=flipped?'rotateY(180deg)':'';}
+function flipAns(ok){flipped=false;if(ok)onCorrect(qWords[qIdx]);else onWrong(qWords[qIdx]);qIdx++;renderQ();}
+
+function checkMC(btn,chosen,correct){
+  document.querySelectorAll('#mc-wrap button').forEach(b=>b.disabled=true);
+  if(chosen===correct){
+    btn.classList.add('c');onCorrect(qWords[qIdx]);
+    setTimeout(()=>{qIdx++;renderQ();},1100);
+  } else {
+    btn.classList.add('w');
+    document.querySelectorAll('#mc-wrap button').forEach(b=>{if(b.textContent.trim()===correct)b.classList.add('c');});
+    onWrong(qWords[qIdx]);
+    setTimeout(()=>{qIdx++;renderQ();},1800);
+  }
+}
+
+function onCorrect(w){
+  qC++;STREAK++;
+  const xpG=10+(STREAK>5?5:0)+(STREAK>10?5:0);
+  XP+=xpG;
+  const key=(qType==='bizim'?'biz':'yn')+':'+w.ispanyolca;
+  recResult(key,true);
+  updateHeader();
+  showXP('+'+xpG+' XP');
+  if(qType==='bizim')bizimDone=Math.min(bizimDone+1,DB.bizimKelimeler.length);
+  else yeniDone=Math.min(yeniDone+1,DB.yeniKelimeler.filter(x=>x.seviye===curYeniLevel).length);
+}
+function onWrong(w){
+  qW++;qH--;STREAK=0;
+  const key=(qType==='bizim'?'biz':'yn')+':'+w.ispanyolca;
+  recResult(key,false);
+  updateHeader();
+  document.getElementById('q-hearts').classList.add('anim-heartBreak');
+  setTimeout(()=>document.getElementById('q-hearts').classList.remove('anim-heartBreak'),500);
+}
+
+function showXP(txt){
+  const el=document.getElementById('xp-float');
+  el.textContent=txt;el.style.display='block';
+  el.style.animation='none';void el.offsetWidth;
+  el.style.animation='xpFloat 1.3s ease forwards';
+  setTimeout(()=>el.style.display='none',1400);
+}
+
+function showResult(){
+  const total=qC+qW;
+  const pct=total?Math.round(qC/total*100):0;
+  document.getElementById('res-c').textContent=qC;
+  document.getElementById('res-w').textContent=qW;
+  document.getElementById('res-xp').textContent='+'+(qC*10);
+  const m=document.getElementById('res-mouth');
+  if(pct>=80){document.getElementById('res-title').textContent='Mükemmel! 🏆';if(m)m.setAttribute('d','M38 52 Q50 64 62 52');spawnConfetti();}
+  else if(pct>=50){document.getElementById('res-title').textContent='İyi iş! ⭐';if(m)m.setAttribute('d','M40 54 Q50 60 60 54');}
+  else{document.getElementById('res-title').textContent='Devam et! 💪';if(m)m.setAttribute('d','M40 56 Q50 52 60 56');}
+  document.getElementById('res-body').textContent=qC+' doğru, '+qW+' yanlış — %'+pct+' başarı';
+  document.getElementById('res-ov').style.display='flex';
+}
+
+function spawnConfetti(){
+  const box=document.getElementById('confetti-box');
+  box.innerHTML='';
+  const colors=['#12470b','#fdc003','#9e2900','#9dd78b','#3b82f6','#f59e0b','#ec4899'];
+  for(let i=0;i<50;i++){
+    const el=document.createElement('div');
+    const sz=6+Math.random()*10;
+    el.style.cssText=`position:absolute;width:${sz}px;height:${sz}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}%;top:0;border-radius:${Math.random()>.5?'50%':'3px'};animation:confettiDrop ${.6+Math.random()*.9}s ${Math.random()*.7}s ease-in forwards;`;
+    box.appendChild(el);
+  }
+  setTimeout(()=>box.innerHTML='',2500);
+}
+
+// ════════════════════════════════════════════
+//  SENTENCE BUILDER
+// ════════════════════════════════════════════
+function sbTab(t){
+  sbCurTab=t;sbWords=[];
+  ['bizim','yeni','yemek'].forEach(k=>{
+    const el=document.getElementById('sbt-'+k);
+    if(el)el.className='btn btn-sm '+(k===t?'btn-primary':'btn-outline');
+    if(el)el.style.flex='1';
+  });
+  sbLoad();sbRenderDrop();
+}
+function sbLoad(){
+  let src;
+  if(sbCurTab==='bizim')src=shuffle([...DB.bizimKelimeler]).slice(0,9);
+  else if(sbCurTab==='yeni')src=shuffle(DB.yeniKelimeler.filter(w=>w.seviye==='A1')).slice(0,9);
+  else src=shuffle((DB.kategoriler.yemek||[])).slice(0,9);
+  document.getElementById('sb-grid').innerHTML=src.map((w,i)=>`
+    <div class="chip" id="sbw-${i}" onclick="sbAdd('${w.ispanyolca.replace(/'/g,"&#39;")}',${i})">
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:800;font-size:12px;color:var(--primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${w.ispanyolca}</div>
+        <div style="font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${w.turkce}</div>
+      </div>
+    </div>`).join('');
+}
+function sbAdd(word,idx){
+  sbWords.push({word,idx});
+  const el=document.getElementById('sbw-'+idx);
+  if(el)el.classList.add('used');
+  sbRenderDrop();
+}
+function sbRenderDrop(){
+  const drop=document.getElementById('sb-drop');
+  if(!sbWords.length){
+    drop.innerHTML='<span id="sb-ph" style="color:#9a8060;font-weight:600;font-size:13px;width:100%;text-align:center">Aşağıdaki kelimelere tıkla 👇</span>';
+    return;
+  }
+  drop.innerHTML=sbWords.map((w,i)=>`<span class="drop-chip" onclick="sbRemove(${i})">${w.word} <span style="opacity:.6;font-size:11px">✕</span></span>`).join('');
+}
+function sbRemove(i){
+  const r=sbWords.splice(i,1)[0];
+  const el=document.getElementById('sbw-'+r.idx);
+  if(el)el.classList.remove('used');
+  sbRenderDrop();
+}
+function sbClear(){
+  sbWords=[];
+  document.querySelectorAll('[id^=sbw-]').forEach(el=>el.classList.remove('used'));
+  sbRenderDrop();
+  document.getElementById('sb-fb').style.display='none';
+}
+function sbShuffle(){sbClear();sbLoad();}
+function sbCheck(){
+  if(sbWords.length<2){alert('En az 2 kelime seç!');return;}
+  const s=sbWords.map(w=>w.word).join(' ');
+  const fb=document.getElementById('sb-fb');
+  fb.style.display='block';
+  fb.style.background='var(--primary-bg)';
+  fb.style.border='1.5px solid var(--primary-l)';
+  fb.innerHTML=`<div style="font-weight:800;color:var(--primary);margin-bottom:4px">"${s}"</div>
+    <div style="font-size:12px;color:var(--muted)">✅ Cümleni kaydettin! <button onclick="speakText('${s.replace(/'/g,"\\'")}')" style="background:none;border:none;cursor:pointer;color:var(--primary);font-weight:700;font-size:12px">🔊 Dinle</button></div>`;
+  XP+=5;updateHeader();save();
+}
+
+// ════════════════════════════════════════════
+//  VOCAB
+// ════════════════════════════════════════════
+function vocabFilter(f){
+  vocabCurFilter=f;expandedWord=null;
+  document.getElementById('vocab-expand').style.display='none';
+  ['all','bizim','A1','A2','zor'].forEach(k=>{
+    const el=document.getElementById('vf-'+k);
+    if(el)el.className='btn btn-sm '+(k===f?'btn-primary':'btn-outline');
+  });
+  renderVocab(f);
+}
+function renderVocab(f){
+  let rows=[];
+  if(f==='all'||f==='bizim') DB.bizimKelimeler.forEach(w=>rows.push({sp:w.ispanyolca,tr:w.turkce,cat:'bizim',lvl:'Bizim',w}));
+  if(f==='all'||f==='A1') DB.yeniKelimeler.filter(w=>w.seviye==='A1').forEach(w=>rows.push({sp:w.ispanyolca,tr:w.turkce,cat:'A1',lvl:'A1',w}));
+  if(f==='all'||f==='A2') DB.yeniKelimeler.filter(w=>w.seviye==='A2').forEach(w=>rows.push({sp:w.ispanyolca,tr:w.turkce,cat:'A2',lvl:'A2',w}));
+  if(f==='all'||f==='zor') (DB.zorKelimeler||[]).forEach(w=>rows.push({sp:w.ispanyolca,tr:w.ingilizce||w.turkce,cat:'zor',lvl:w.seviye,w}));
+  // Sort by accuracy desc
+  rows.sort((a,b)=>{
+    const ka=(a.cat==='bizim'?'biz':a.cat==='zor'?'zor':'yn')+':'+a.sp;
+    const kb=(b.cat==='bizim'?'biz':b.cat==='zor'?'zor':'yn')+':'+b.sp;
+    const aa=getAcc(ka),ab=getAcc(kb);
+    if(aa===null&&ab===null)return 0;
+    if(aa===null)return 1;if(ab===null)return -1;
+    return ab-aa;
+  });
+  const list=document.getElementById('vocab-list');
+  list.innerHTML=rows.map((r,i)=>{
+    const key=(r.cat==='bizim'?'biz':r.cat==='zor'?'zor':'yn')+':'+r.sp;
+    const acc=getAcc(key);
+    const s=stats[key]||{c:0,w:0};
+    const total=s.c+s.w;
+    const bc=acc===null?'#94a3b8':acc>=80?'#16a34a':acc>=50?'#d97706':'#dc2626';
+    return `<div class="dict-row anim-fadeIn" style="animation-delay:${i*.012}s" onclick="expandVocab(${i},'${r.sp.replace(/'/g,"&#39;")}','${r.tr.replace(/'/g,"&#39;")}','${r.cat}')">
+      <span style="font-size:12px;color:var(--muted);font-weight:700">${i+1}</span>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-weight:800">${r.sp}</span>
+        <button onclick="event.stopPropagation();speakText('${r.sp.replace(/'/g,"\\'")}');" style="background:none;border:none;cursor:pointer;font-size:14px;padding:0" title="Dinle">🔊</button>
+      </div>
+      <span style="color:var(--muted);font-size:13px;font-weight:600">${r.tr}</span>
+      <span class="badge badge-${r.cat==='A1'?'a1':r.cat==='A2'?'a2':r.cat==='zor'?'zor':'bizim'}">${r.lvl}</span>
+      <div style="text-align:right">
+        <div style="font-size:13px;font-weight:800;color:${bc}">${acc!==null?acc+'%':'—'}</div>
+        <div class="acc-bar"><div class="acc-fill" style="width:${acc||0}%;background:${bc}"></div></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px">${total?total+' deneme':''}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function expandVocab(idx,sp,tr,cat){
+  if(expandedWord===sp){expandedWord=null;document.getElementById('vocab-expand').style.display='none';return;}
+  expandedWord=sp;
+  // Find word obj
+  let wo=DB.bizimKelimeler.find(w=>w.ispanyolca===sp)||
+          DB.yeniKelimeler.find(w=>w.ispanyolca===sp)||
+          (DB.zorKelimeler||[]).find(w=>w.ispanyolca===sp);
+  const box=document.getElementById('vocab-expand');
+  box.style.display='block';
+  box.innerHTML=`
+    <div style="padding:20px;display:flex;gap:20px;flex-wrap:wrap;align-items:start">
+      <div style="flex:1;min-width:200px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="font-size:26px;font-weight:900;color:var(--primary)">${sp}</div>
+          <button onclick="speakText('${sp.replace(/'/g,"\\'")}');" class="btn btn-outline btn-sm">🔊 Dinle</button>
+        </div>
+        <div style="font-size:15px;font-weight:700;color:var(--muted);margin-bottom:12px">${tr}</div>
+        ${wo&&wo.ornek?`
+        <div style="background:var(--primary-bg);border-radius:12px;padding:12px;border:1.5px solid var(--primary-l)">
+          <div style="font-size:13px;font-weight:800;color:var(--muted);margin-bottom:4px">📌 ÖRNEK CÜMLE</div>
+          <div style="font-size:15px;font-weight:700;color:var(--primary);margin-bottom:4px">${wo.ornek}</div>
+          <div style="font-size:13px;color:var(--muted);font-style:italic">${wo.ornek_tr}</div>
+          <button onclick="speakText('${(wo.ornek||'').replace(/'/g,"\\'")}');" class="btn btn-outline btn-sm" style="margin-top:8px">🔊 Cümleyi dinle</button>
+        </div>`:''}
+      </div>
+    </div>`;
+}
+
+// ════════════════════════════════════════════
+//  VERB CONJUGATIONS
+// ════════════════════════════════════════════
+function renderVerbs(){
+  const list=document.getElementById('verb-list');
+  if(!list||!DB.fiilCekimleri)return;
+  list.innerHTML=DB.fiilCekimleri.map((f,i)=>`
+    <div class="card shadow anim-slideUp" style="padding:18px;animation-delay:${i*.06}s">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div>
+          <span style="font-size:20px;font-weight:900;color:var(--primary)">${f.fiil}</span>
+          <span style="font-size:13px;color:var(--muted);margin-left:8px;font-weight:600">${f.anlam}</span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span style="background:var(--primary-bg);color:var(--primary);padding:3px 10px;border-radius:999px;font-size:10px;font-weight:800">${f.tip}</span>
+          <button onclick="speakText('${f.fiil}')" style="background:none;border:none;cursor:pointer;font-size:16px">🔊</button>
+        </div>
+      </div>
+      <div class="verb-grid">
+        ${Object.entries(f.cekimler).map(([pro,form])=>`
+          <div class="verb-cell" style="background:var(--bg);border-radius:10px;cursor:pointer" onclick="speakText('${form}')" title="Dinle">
+            <span class="verb-pro">${pro}</span>
+            <span class="verb-form">${form}</span>
+          </div>`).join('')}
+      </div>
+      ${f.ornek?`
+      <div style="margin-top:12px;padding:10px;background:var(--primary-bg);border-radius:10px;font-size:12px">
+        <div style="color:var(--primary);font-weight:700;margin-bottom:2px">📌 ${f.ornek}</div>
+        <div style="color:var(--muted);font-style:italic">${f.ornek_tr}</div>
+        <button onclick="speakText('${(f.ornek||'').replace(/'/g,"\\'")}');" style="background:none;border:none;cursor:pointer;color:var(--primary);font-size:12px;font-weight:700;margin-top:4px">🔊 Dinle</button>
+      </div>`:''}
+    </div>`).join('');
+}
+
+// Verb quiz
+let vqAllWords=[];
+function startVerbQuiz(){
+  if(!DB.fiilCekimleri||!DB.fiilCekimleri.length)return;
+  vqAllWords=[];
+  DB.fiilCekimleri.forEach(f=>{
+    Object.entries(f.cekimler).forEach(([pro,form])=>{
+      vqAllWords.push({fiil:f.fiil,anlam:f.anlam,pro,form,allForms:f.cekimler});
+    });
+  });
+  vqWords=shuffle(vqAllWords).slice(0,12);
+  vqIdx=0;vqC=0;vqW=0;
+  document.getElementById('vq-ov').style.display='flex';
+  renderVQ();
+}
+function closeVerbQuiz(){document.getElementById('vq-ov').style.display='none';}
+function renderVQ(){
+  if(vqIdx>=vqWords.length){closeVerbQuiz();alert(`Fiil quizi bitti! ✅ ${vqC} doğru / ${vqW} yanlış`);return;}
+  const w=vqWords[vqIdx];
+  document.getElementById('vq-counter').textContent=(vqIdx+1)+'/'+vqWords.length;
+  document.getElementById('vq-prog').style.width=(vqIdx/vqWords.length*100)+'%';
+  // Show pronoun, ask conjugation
+  const allForms=Object.values(w.allForms);
+  const wrongs=shuffle(allForms.filter(f=>f!==w.form)).slice(0,3);
+  const choices=shuffle([w.form,...wrongs]);
+  document.getElementById('vq-body').innerHTML=`
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Doğru çekimi seç</div>
+      <div style="display:inline-block;background:var(--primary-bg);border:2.5px solid var(--primary-l);border-radius:18px;padding:14px 28px">
+        <div style="font-size:13px;color:var(--muted);font-weight:700;margin-bottom:4px">${w.fiil} — ${w.anlam}</div>
+        <div style="font-size:28px;font-weight:900;color:var(--primary)">${w.pro}</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="vq-mc">
+      ${choices.map(c=>`<button class="mc-btn" onclick="checkVQ(this,'${c}','${w.form}')">${c}</button>`).join('')}
+    </div>`;
+  document.getElementById('vq-foot').innerHTML='';
+}
+function checkVQ(btn,chosen,correct){
+  document.querySelectorAll('#vq-mc button').forEach(b=>b.disabled=true);
+  if(chosen===correct){
+    btn.classList.add('c');vqC++;XP+=8;
+    recResult('vq:'+correct,true);
+  } else {
+    btn.classList.add('w');
+    document.querySelectorAll('#vq-mc button').forEach(b=>{if(b.textContent===correct)b.classList.add('c');});
+    vqW++;
+    recResult('vq:'+correct,false);
+  }
+  updateHeader();save();
+  setTimeout(()=>{vqIdx++;renderVQ();},1300);
+}
+
+// ════════════════════════════════════════════
+//  CATEGORIES
+// ════════════════════════════════════════════
+const CAT_META={
+  yemek:{icon:'🍽',label:'Yemek & İçecek',badge:'badge-yemek'},
+  seyahat:{icon:'✈️',label:'Seyahat',badge:'badge-seyahat'},
+  is:{icon:'💼',label:'İş Hayatı',badge:'badge-is'},
+  sayilar:{icon:'🔢',label:'Sayılar',badge:'badge-sayilar'}
+};
+function renderCatTabs(){
+  const tabs=document.getElementById('cat-tabs');
+  if(!tabs)return;
+  tabs.innerHTML=Object.entries(CAT_META).map(([k,v])=>`
+    <button class="btn btn-sm ${k===curCat?'btn-primary':'btn-outline'}" onclick="selectCat('${k}')">${v.icon} ${v.label}</button>`).join('');
+}
+function selectCat(c){curCat=c;renderCatTabs();renderCat(c);}
+function renderCat(c){
+  const words=(DB.kategoriler||{})[c]||[];
+  const meta=CAT_META[c]||{icon:'📂',label:c};
+  const el=document.getElementById('cat-content');
+  if(!el)return;
+  if(!words.length){el.innerHTML='<div style="text-align:center;color:var(--muted);padding:40px;font-weight:700">Yükleniyor...</div>';return;}
+  el.innerHTML=`
+    <div style="margin-bottom:16px;display:flex;align-items:center;gap:10px">
+      <div style="font-size:32px">${meta.icon}</div>
+      <div>
+        <div style="font-size:18px;font-weight:900;color:var(--primary)">${meta.label}</div>
+        <div style="font-size:13px;color:var(--muted);font-weight:600">${words.length} kelime</div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="startCatQuiz('${c}')" style="margin-left:auto">🎯 Quiz</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+      ${words.map((w,i)=>`
+        <div class="card shadow anim-slideUp" style="padding:14px;cursor:pointer;transition:transform .2s;animation-delay:${i*.04}s"
+          onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform=''">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <div style="font-size:18px;font-weight:900;color:var(--primary)">${w.ispanyolca}</div>
+            <button onclick="speakText('${w.ispanyolca.replace(/'/g,"\\'")}');" style="background:none;border:none;cursor:pointer;font-size:16px">🔊</button>
+          </div>
+          <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:8px">${w.turkce}</div>
+          ${w.ornek?`<div style="font-size:11px;background:var(--bg);border-radius:8px;padding:8px;color:var(--muted);font-style:italic;line-height:1.4">
+            "${w.ornek}"<br><span style="color:var(--primary);font-style:normal;font-weight:700">${w.ornek_tr}</span>
+          </div>`:''}
+        </div>`).join('')}
+    </div>`;
+}
+
+// Category quiz
+function startCatQuiz(c){
+  const words=shuffle((DB.kategoriler||{})[c]||[]).slice(0,8);
+  if(!words.length)return;
+  qType='bizim';qWords=words;qIdx=0;qC=0;qW=0;qH=3;
+  document.getElementById('quiz-ov').style.display='flex';
+  renderQ();
+}
+
+// ════════════════════════════════════════════
+//  CHALLENGE
+// ════════════════════════════════════════════
+function startChallenge(type){
+  chalType=type;chalIdx=0;chalC=0;chalW=0;
+  chalWords=shuffle(DB.yeniKelimeler.filter(w=>w.seviye==='A2')).slice(0,8);
+  const area=document.getElementById('chal-area');
+  area.style.display='block';
+  renderChal();
+}
+function renderChal(){
+  const area=document.getElementById('chal-area');
+  if(chalIdx>=chalWords.length){area.innerHTML=chalResult();return;}
+  const w=chalWords[chalIdx];
+  if(chalType==='translate'){
+    area.innerHTML=`
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Soru ${chalIdx+1}/${chalWords.length} · A2 Çeviri</div>
+        <div style="display:inline-block;background:var(--red-bg);border:2.5px solid var(--red-l);border-radius:18px;padding:14px 28px;margin-bottom:14px">
+          <div style="font-size:26px;font-weight:900;color:var(--red)">${w.turkce}</div>
+        </div><br/>
+        <input class="quiz-input" id="chal-inp" type="text" placeholder="İspanyolca..." autocomplete="off" autocorrect="off" spellcheck="false"/>
+        <div id="chal-hint" style="height:22px;text-align:center;font-size:13px;font-weight:700;margin-top:8px"></div>
+        ${w.ornek_tr?`<div style="margin-top:8px;font-size:12px;color:var(--muted);font-style:italic">💡 ${w.ornek_tr}</div>`:''}
+      </div>
+      <button class="btn btn-red btn-lg btn-block" onclick="checkChal('${w.ispanyolca.replace(/'/g,"&#39;")}')">Kontrol Et ✓</button>`;
+    setTimeout(()=>{const i=document.getElementById('chal-inp');if(i){i.focus();i.onkeydown=e=>{if(e.key==='Enter')checkChal('${w.ispanyolca}');};}},80);
+  } else {
+    // Sentence build
+    chalBuilt=[];
+    const pool=shuffle([...DB.bizimKelimeler,...DB.yeniKelimeler.filter(x=>x.seviye==='A1')]).slice(0,5);
+    pool.push(w);
+    const chips=shuffle(pool);
+    area.innerHTML=`
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Soru ${chalIdx+1}/${chalWords.length} · Cümle Kur</div>
+        <div style="background:var(--red-bg);border:1.5px solid var(--red-l);border-radius:12px;padding:12px;font-size:13px;font-weight:700;color:var(--muted)">
+          Bu kelimeyi kullan: <strong style="color:var(--red);font-size:15px">"${w.ispanyolca}"</strong> (${w.turkce})
+        </div>
+      </div>
+      <div id="chal-drop" style="min-height:58px;background:var(--red-bg);border:2.5px dashed var(--red-l);border-radius:14px;padding:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px">
+        <span style="color:#c08080;font-size:13px;font-weight:600;width:100%;text-align:center">Kelimeleri seç...</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px" id="chal-chips">
+        ${chips.map((c,i)=>`<div class="chip" id="cc-${i}" onclick="chalAdd('${c.ispanyolca.replace(/'/g,"&#39;")}',${i})">${c.ispanyolca}</div>`).join('')}
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-outline btn-sm" onclick="chalClear()" style="padding:11px 14px">✕</button>
+        <button class="btn btn-red btn-sm" onclick="chalSubmit('${w.ispanyolca.replace(/'/g,"&#39;")}')" style="flex:1;padding:11px">Cümleyi Gönder</button>
+      </div>`;
+  }
+}
+function checkChal(correct){
+  const inp=document.getElementById('chal-inp');
+  if(!inp)return;
+  const ans=inp.value.trim().toLowerCase();
+  const ok=correct.toLowerCase().split('/').some(v=>ans===v.trim());
+  if(ok){
+    inp.classList.add('ok');
+    document.getElementById('chal-hint').innerHTML='<span style="color:#16a34a">✅ Doğru! +15 XP</span>';
+    chalC++;XP+=15;STREAK++;recResult('chal:'+correct,true);
+  } else {
+    inp.classList.add('err');
+    document.getElementById('chal-hint').innerHTML=`<span style="color:#dc2626">❌ Doğrusu: ${correct}</span>`;
+    chalW++;STREAK=0;recResult('chal:'+correct,false);
+  }
+  updateHeader();save();
+  setTimeout(()=>{chalIdx++;renderChal();},ok?1000:2200);
+}
+function chalAdd(word,i){
+  chalBuilt.push({word,i});
+  const el=document.getElementById('cc-'+i);if(el)el.classList.add('used');
+  const drop=document.getElementById('chal-drop');
+  if(drop)drop.innerHTML=chalBuilt.map((w,j)=>`<span class="drop-chip" onclick="chalRem(${j})">${w.word} <span style="opacity:.6;font-size:11px">✕</span></span>`).join('');
+}
+function chalRem(j){
+  const r=chalBuilt.splice(j,1)[0];
+  const el=document.getElementById('cc-'+r.i);if(el)el.classList.remove('used');
+  const drop=document.getElementById('chal-drop');
+  if(drop)drop.innerHTML=chalBuilt.length?chalBuilt.map((w,k)=>`<span class="drop-chip" onclick="chalRem(${k})">${w.word} <span style="opacity:.6;font-size:11px">✕</span></span>`).join(''):'<span style="color:#c08080;font-size:13px;font-weight:600;width:100%;text-align:center">Kelimeleri seç...</span>';
+}
+function chalClear(){
+  chalBuilt=[];
+  document.querySelectorAll('[id^=cc-]').forEach(el=>el.classList.remove('used'));
+  const drop=document.getElementById('chal-drop');
+  if(drop)drop.innerHTML='<span style="color:#c08080;font-size:13px;font-weight:600;width:100%;text-align:center">Kelimeleri seç...</span>';
+}
+function chalSubmit(target){
+  if(chalBuilt.length<2){alert('En az 2 kelime!');return;}
+  const has=chalBuilt.some(w=>w.word===target);
+  const s=chalBuilt.map(w=>w.word).join(' ');
+  const fb=has
+    ?`<div style="background:#dcfce7;border:2px solid #16a34a;border-radius:12px;padding:12px;text-align:center;margin-bottom:12px;font-weight:700;color:#15803d;animation:popIn .4s ease">✅ "${s}" — Hedef kelimeyi kullandın! +15 XP</div>`
+    :`<div style="background:#fee2e2;border:2px solid #dc2626;border-radius:12px;padding:12px;text-align:center;margin-bottom:12px;font-weight:700;color:#dc2626;animation:shake .4s ease">❌ "${target}" kelimesini kullanmadın!</div>`;
+  document.getElementById('chal-area').insertAdjacentHTML('afterbegin',fb);
+  if(has){chalC++;XP+=15;STREAK++;recResult('chal:'+target,true);}
+  else{chalW++;STREAK=0;recResult('chal:'+target,false);}
+  updateHeader();save();
+  setTimeout(()=>{chalIdx++;renderChal();},2000);
+}
+function chalResult(){
+  const pct=Math.round(chalC/(chalC+chalW||1)*100);
+  return `<div style="text-align:center;padding:20px">
+    <div style="font-size:50px;margin-bottom:12px">${pct>=80?'🏆':pct>=50?'⭐':'💪'}</div>
+    <div style="font-size:22px;font-weight:900;color:var(--red);margin-bottom:6px">${pct>=80?'Mükemmel!':pct>=50?'İyi iş!':'Tekrar dene!'}</div>
+    <div style="color:var(--muted);font-weight:600;margin-bottom:20px">${chalC} doğru · ${chalW} yanlış · %${pct}</div>
+    <button class="btn btn-red btn-lg" onclick="startChallenge('${chalType}')">🔄 Tekrar</button>
+  </div>`;
+}
+
+// ════════════════════════════════════════════
+//  HARD MODE
+// ════════════════════════════════════════════
+function startHard(){
+  hardIdx=0;hardC=0;hardW=0;
+  hardWords=shuffle([...(DB.zorKelimeler||[])]).slice(0,10);
+  const area=document.getElementById('hard-area');
+  area.style.display='block';
+  renderHard();
+}
+function renderHard(){
+  const area=document.getElementById('hard-area');
+  if(hardIdx>=hardWords.length){area.innerHTML=hardResult();return;}
+  const w=hardWords[hardIdx];
+  const pool=DB.zorKelimeler||[];
+  const wrongs=shuffle(pool.filter(x=>x.ispanyolca!==w.ispanyolca)).slice(0,3);
+  const choices=shuffle([w,...wrongs]);
+  area.innerHTML=`
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px">
+        <span style="background:#7c2d12;color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:800">${w.seviye}</span>
+        <span style="background:var(--gold-bg);color:var(--gold);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:800">ENG → ESP</span>
+      </div>
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Soru ${hardIdx+1}/${hardWords.length}</div>
+      <div style="display:inline-block;background:#7c2d12;color:#fff;border-radius:18px;padding:16px 28px;margin-bottom:4px">
+        <div style="font-size:26px;font-weight:900">${w.ingilizce}</div>
+      </div>
+    </div>
+    <div style="display:grid;gap:10px" id="hard-mc">
+      ${choices.map(c=>`<button class="mc-btn" onclick="checkHard(this,'${c.ispanyolca.replace(/'/g,"&#39;")}','${w.ispanyolca.replace(/'/g,"&#39;")}')">${c.ispanyolca}${c.ornek?` <span style="font-size:11px;color:var(--muted);font-weight:400"> — ${c.turkce||''}</span>`:''}
+      </button>`).join('')}
+    </div>
+    ${w.ornek?`<div style="margin-top:12px;background:var(--gold-bg);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--gold);font-weight:700">
+      💡 ${w.ornek} <br><span style="color:var(--muted);font-weight:600;font-style:italic">${w.ornek_tr||''}</span>
+    </div>`:''}`;
+}
+function checkHard(btn,chosen,correct){
+  document.querySelectorAll('#hard-mc button').forEach(b=>b.disabled=true);
+  if(chosen===correct){
+    btn.classList.add('c');hardC++;XP+=20;STREAK++;
+    recResult('hard:'+correct,true);showXP('+20 XP 🔥');
+  } else {
+    btn.classList.add('w');
+    document.querySelectorAll('#hard-mc button').forEach(b=>{if(b.textContent.includes(correct))b.classList.add('c');});
+    hardW++;STREAK=0;recResult('hard:'+correct,false);
+  }
+  updateHeader();save();
+  setTimeout(()=>{hardIdx++;renderHard();},1400);
+}
+function hardResult(){
+  const pct=Math.round(hardC/(hardC+hardW||1)*100);
+  return `<div style="text-align:center;padding:20px">
+    <div style="font-size:50px;margin-bottom:12px">${pct>=80?'🔥':pct>=50?'💪':'🧠'}</div>
+    <div style="font-size:22px;font-weight:900;color:#7c2d12;margin-bottom:6px">${pct>=80?'B1\'e hazırsın!':pct>=50?'Gelişiyorsun!':'Çalışmaya devam!'}</div>
+    <div style="color:var(--muted);font-weight:600;margin-bottom:20px">${hardC} doğru · ${hardW} yanlış · %${pct}</div>
+    <button class="btn btn-red btn-lg" onclick="startHard()">🔄 Tekrar</button>
+  </div>`;
+}
+</script>
+</body>
+</html>
